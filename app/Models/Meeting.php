@@ -14,4 +14,17 @@ class Meeting extends Model
     protected $primaryKey = 'meeting_id';
 
     public $timestamps = false;
+
+    protected $fillable = [
+        'meeting_date',
+        'start_hour',
+        'department_id',
+        'called_by',
+        'placement',
+        'meeting_description',
+        'empty_field',
+        'topics',
+        'created_by',
+        'creation_date',
+    ];
 }
