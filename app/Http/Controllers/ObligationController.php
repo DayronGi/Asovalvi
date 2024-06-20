@@ -68,4 +68,70 @@ class ObligationController extends Controller
             return response()->json(['error' => 'Error al intentar guardar obligation.', 'exception' => $e->getMessage()], 500);
         }
     }
+
+    public function view($obligation_id)
+    {
+        $obligation = Obligation::findORfail($obligation_id);
+        return response()->json(['obligation' => $obligation]);
+    }
+
+    public function update(Request $request, $obligation_id)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'obligation_description' => 'required|string',
+            'type_id' => 'required|integer',
+            'category_id' => 'required|integer',
+            'server_name' => 'nullable|string',
+            'quantity' => 'required|integer',
+            'period' => 'required|string',
+            'alert_time' => 'required|integer',
+            'department_id' => 'required|integer',
+            'created_by' => 'required|integer',
+            'last_payment' => 'nullable|numeric',
+            'expiration_date' => 'nullable|date',
+            'observations' => 'required|string',
+            'internal_reference' => 'nullable|string',
+            'reviewed_by' => 'nullable|integer',
+            'review_date' => 'nullable|date'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        try {
+            $obligation = Obligation::findORfail($obligation_id);
+            $obligation->update([
+                'obligation_description' => $request->obligation_description,
+                'type_id' => $request->type_id,
+                'category_id' => $request->category_id,
+                'server_name' => $request->server_name,
+                'quantity' => $request->quantity,
+                'period' => $request->period,
+                'alert_time' => $request->alert_time,
+                'department_id' => $request->department_id,
+                'created_by' => $request->created_by,
+                'last_payment' => $request->last_payment,
+                'expiration_date' => $request->expiration_date,
+                'observations' => $request->observations,
+                'internal_reference' => $request->internal_reference,
+                'reviewed_by' => $request->reviewed_by,
+                'review_date' => $request->review_date,
+            ]);
+            return response()->json(['message' => 'Obligation actualizado correctamente.']);
+        } catch (\Exception $e) {
+            \Log::error($e->getMessage());
+            return response()->json(['error' => 'Error al intentar actualizar obligation.', 'exception' => $e->getMessage()], 500);
+        }
+    }
+
+    public function delete($obligation_id)
+    {
+        $obligation = Obligation::findORfail($obligation_id);
+        $obligation->update([
+            'status' => 1
+        ]);
+        return response()->json(['message' => 'Obligation eliminado correctamente.']);
+    }
 }
