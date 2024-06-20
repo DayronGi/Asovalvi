@@ -8,10 +8,13 @@ use Illuminate\Support\Facades\Validator;
 
 class MeetingController extends Controller
 {
-    public function list()
+    public function list(Request $request)
     {
-        $meetings = Meeting::all();
-        return response()->json(['meetings' => $meetings]);
+        $perPage = $request->input('per_page', 15);
+
+        $meetings = Meeting::paginate($perPage);
+
+        return response()->json($meetings);
     }
 
     public function store(Request $request)

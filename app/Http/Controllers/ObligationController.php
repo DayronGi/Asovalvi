@@ -8,10 +8,13 @@ use Illuminate\Support\Facades\Validator;
 
 class ObligationController extends Controller
 {
-    public function list()
+    public function list(Request $request)
     {
-        $obligations = Obligation::all();
-        return response()->json(['obligations' => $obligations]);
+        $perPage = $request->input('per_page', 15);
+
+        $obligations = Obligation::paginate($perPage);
+
+        return response()->json($obligations);
     }
 
     public function store(Request $request)

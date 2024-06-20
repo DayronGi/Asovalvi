@@ -8,10 +8,13 @@ use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
-    public function list()
+    public function list(Request $request)
     {
-        $tasks = Task::all();
-        return response()->json(['tasks' => $tasks]);
+        $perPage = $request->input('per_page', 15);
+
+        $tasks = Task::paginate($perPage);
+
+        return response()->json($tasks);
     }
 
     public function store(Request $request)
