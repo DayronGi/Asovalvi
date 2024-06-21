@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Task extends Model
 {
@@ -31,4 +32,9 @@ class Task extends Model
         'review_date',
         'status'
     ];
+
+    public function meeting(): BelongsTo
+    {
+        return $this->belongsTo(Meeting::class, 'meeting_id', 'meeting_id');
+    }
 }
