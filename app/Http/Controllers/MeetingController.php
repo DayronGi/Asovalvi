@@ -51,7 +51,7 @@ class MeetingController extends Controller
             $meeting->topics = $request->topics;
             $meeting->created_by = $request->created_by;
             $meeting->creation_date = $request->creation_date;
-            $meeting->status = $request->status;
+            $meeting->status = 2;
 
             $meeting->save();
 

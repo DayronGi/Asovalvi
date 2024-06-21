@@ -57,7 +57,7 @@ class TaskController extends Controller
             $task->creation_date = $request->creation_date;
             $task->reviewed_by = $request->reviewed_by;
             $task->review_date = $request->review_date;
-            $task->status = $request->status;
+            $task->status = 2;
 
             $task->save();
 

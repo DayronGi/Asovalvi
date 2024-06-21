@@ -26,5 +26,6 @@ class Meeting extends Model
         'topics',
         'created_by',
         'creation_date',
+        'status'
     ];
 }

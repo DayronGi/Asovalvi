@@ -28,6 +28,7 @@ class Task extends Model
         'created_by',
         'creation_date',
         'reviewed_by',
-        'review_date'
+        'review_date',
+        'status'
     ];
 }

@@ -61,7 +61,7 @@ class ObligationController extends Controller
             $obligation->internal_reference = $request->internal_reference;
             $obligation->reviewed_by = $request->reviewed_by;
             $obligation->review_date = $request->review_date;
-            $obligation->status = $request->status;
+            $obligation->status = 2;
 
             $obligation->save();
 
