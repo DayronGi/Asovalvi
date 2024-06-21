@@ -20,17 +20,14 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'task_id' => 'required|integer',
             'meeting_id' => 'required|integer',
             'start_date' => 'required|date',
             'estimated_time' => 'required|integer',
             'units' => 'required|string',
-            'type_id' => 'required|integer',
             'task_description' => 'required|string',
             'assigned_to' => 'required|string',
-            'department_id' => 'required|integer',
             'observations' => 'nullable|string',
-            'created_by' => 'required|integer',
+            'created_by' => 'nullable|integer',
             'creation_date' => 'required|date',
             'reviewed_by' => 'nullable|integer',
             'review_date' => 'nullable|date',
@@ -54,10 +51,10 @@ class TaskController extends Controller
             $task->department_id = $request->department_id;
             $task->observations = $request->observations;
             $task->created_by = $request->created_by;
-            $task->creation_date = $request->creation_date;
+            $task->creation_date = \Carbon\Carbon::now();
             $task->reviewed_by = $request->reviewed_by;
             $task->review_date = $request->review_date;
-            $task->status = $request->status;
+            $task->status = 2;
 
             $task->save();
 
@@ -88,8 +85,7 @@ class TaskController extends Controller
             'assigned_to' => 'nullable|integer',
             'department_id' => 'required|integer',
             'observations' => 'nullable|string',
-            'created_by' => 'required|integer',
-            'creation_date' => 'required|date',
+            'created_by' => 'nullable|integer',
             'reviewed_by' => 'nullable|integer',
             'review_date' => 'nullable|date',
         ]);
@@ -110,7 +106,6 @@ class TaskController extends Controller
                 'department_id' => $request->department_id,
                 'observations' => $request->observations,
                 'created_by' => $request->created_by,
-                'creation_date' => $request->creation_date,
                 'reviewed_by' => $request->reviewed_by,
                 'review_date' => $request->review_date,
             ]);
