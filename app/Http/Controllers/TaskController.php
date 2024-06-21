@@ -12,7 +12,7 @@ class TaskController extends Controller
     {
         $perPage = $request->input('per_page', 15);
 
-        $tasks = Task::with('meeting')->paginate($perPage);
+        $tasks = Task::with('meeting_id', 'created_by', 'status', 'assigned_to')->paginate($perPage);
 
         return response()->json($tasks);
     }
@@ -48,7 +48,6 @@ class TaskController extends Controller
             $task->type_id = $request->type_id;
             $task->task_description = $request->task_description;
             $task->assigned_to = $request->assigned_to;
-            $task->department_id = $request->department_id;
             $task->observations = $request->observations;
             $task->created_by = $request->created_by;
             $task->creation_date = \Carbon\Carbon::now();
@@ -58,7 +57,7 @@ class TaskController extends Controller
 
             $task->save();
 
-            $task->load('meeting');
+            $task->load('meeting_id', 'created_by', 'status', 'assigned_to');
 
             return response()->json(['message' => 'Task creado correctamente.', 'task' => $task], 201);
         } catch (\Exception $e) {
@@ -69,7 +68,7 @@ class TaskController extends Controller
 
     public function view($task_id)
     {
-        $task = Task::with('meeting')->findOrFail($task_id);
+        $task = Task::with('meeting_id', 'created_by', 'status', 'assigned_to')->findOrFail($task_id);
         return response()->json(['task' => $task]);
     }
 
@@ -83,7 +82,6 @@ class TaskController extends Controller
             'type_id' => 'required|integer',
             'task_description' => 'required|string',
             'assigned_to' => 'nullable|integer',
-            'department_id' => 'required|integer',
             'observations' => 'nullable|string',
             'created_by' => 'nullable|integer',
             'reviewed_by' => 'nullable|integer',
@@ -103,7 +101,6 @@ class TaskController extends Controller
                 'type_id' => $request->type_id,
                 'task_description' => $request->task_description,
                 'assigned_to' => $request->assigned_to,
-                'department_id' => $request->department_id,
                 'observations' => $request->observations,
                 'created_by' => $request->created_by,
                 'reviewed_by' => $request->reviewed_by,

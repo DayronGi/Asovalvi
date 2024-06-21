@@ -24,7 +24,6 @@ class Task extends Model
         'type_id',
         'task_description',
         'assigned_to',
-        'department_id',
         'observations',
         'created_by',
         'creation_date',
@@ -33,8 +32,23 @@ class Task extends Model
         'status'
     ];
 
-    public function meeting(): BelongsTo
+    public function meeting_id(): BelongsTo
     {
         return $this->belongsTo(Meeting::class, 'meeting_id', 'meeting_id');
+    }
+
+    public function created_by(): BelongsTo
+    {
+        return $this->belongsTo(Person::class, 'created_by', 'person_id');
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(State::class, 'status', 'status');
+    }
+
+    public function assigned_to(): BelongsTo
+    {
+        return $this->belongsTo(Person::class, 'assigned_to', 'person_id');
     }
 }
