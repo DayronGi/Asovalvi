@@ -20,7 +20,6 @@ class MeetingController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'meeting_id' => 'required|integer',
             'meeting_date' => 'required|string',
             'start_hour' => 'nullable|string',
             'called_by' => 'required|integer',
@@ -39,7 +38,6 @@ class MeetingController extends Controller
 
         try {
             $meeting = new Meeting();
-            $meeting->meeting_id = $request->meeting_id;
             $meeting->meeting_date = $request->meeting_date;
             $meeting->start_hour = $request->start_hour;
             $meeting->called_by = $request->called_by;
