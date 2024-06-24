@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Obligation extends Model
 {
@@ -24,7 +25,6 @@ class Obligation extends Model
         'quantity',
         'period',
         'alert_time',
-        'department_id',
         'created_by',
         'last_payment',
         'expiration_date',
@@ -34,4 +34,19 @@ class Obligation extends Model
         'review_date',
         'status'
     ];
+
+    public function reviewed_by(): BelongsTo
+    {
+        return $this->belongsTo(Person::class, 'reviewed_by', 'person_id');
+    }
+
+    public function created_by(): BelongsTo
+    {
+        return $this->belongsTo(Person::class, 'created_by', 'person_id');
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(State::class, 'status', 'status');
+    }
 }

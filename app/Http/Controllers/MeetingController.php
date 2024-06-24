@@ -12,7 +12,7 @@ class MeetingController extends Controller
     {
         $perPage = $request->input('per_page', 15);
 
-        $meetings = Meeting::paginate($perPage);
+        $meetings = Meeting::with('called_by', 'created_by', 'status')->paginate($perPage);
 
         return response()->json($meetings);
     }
@@ -23,7 +23,6 @@ class MeetingController extends Controller
             'meeting_id' => 'required|integer',
             'meeting_date' => 'required|date',
             'start_hour' => 'nullable|date',
-            'department_id' => 'required|integer',
             'called_by' => 'required|integer',
             'placement' => 'nullable|string',
             'meeting_description' => 'required|string',
@@ -43,7 +42,6 @@ class MeetingController extends Controller
             $meeting->meeting_id = $request->meeting_id;
             $meeting->meeting_date = $request->meeting_date;
             $meeting->start_hour = $request->start_hour;
-            $meeting->department_id = $request->department_id;
             $meeting->called_by = $request->called_by;
             $meeting->placement = $request->placement;
             $meeting->meeting_description = $request->meeting_description;
@@ -55,6 +53,8 @@ class MeetingController extends Controller
 
             $meeting->save();
 
+            $meeting->load('called_by', 'created_by', 'status');
+
             return response()->json(['message' => 'meeting creado correctamente.', 'meeting' => $meeting], 201);
         } catch (\Exception $e) {
 
@@ -65,7 +65,7 @@ class MeetingController extends Controller
 
     public function view($meeting_id)
     {
-        $meeting = Meeting::findORfail($meeting_id);
+        $meeting = Meeting::with('called_by', 'created_by', 'status')->findORfail($meeting_id);
         return response()->json(['meeting' => $meeting]);
     }
 
@@ -75,7 +75,6 @@ class MeetingController extends Controller
         $validator = Validator::make($request->all(), [
             'meeting_date' => 'required|date',
             'start_hour' => 'nullable|date',
-            'department_id' => 'required|integer',
             'called_by' => 'required|integer',
             'placement' => 'nullable|string',
             'meeting_description' => 'required|string',
@@ -94,7 +93,6 @@ class MeetingController extends Controller
             $meeting->update([
                 'meeting_date' => $request->meeting_date,
                 'start_hour' => $request->start_hour,
-                'department_id' => $request->department_id,
                 'called_by' => $request->called_by,
                 'placement' => $request->placement,
                 'meeting_description' => $request->meeting_description,

@@ -12,7 +12,7 @@ class TaskController extends Controller
     {
         $perPage = $request->input('per_page', 15);
 
-        $tasks = Task::with('meeting_id', 'created_by', 'status', 'assigned_to')->paginate($perPage);
+        $tasks = Task::with('meeting', 'created_by', 'status', 'assigned_to', 'reviewed_by')->paginate($perPage);
 
         return response()->json($tasks);
     }
@@ -57,7 +57,7 @@ class TaskController extends Controller
 
             $task->save();
 
-            $task->load('meeting_id', 'created_by', 'status', 'assigned_to');
+            $task->load('meeting', 'created_by', 'status', 'assigned_to', 'reviewed_by');
 
             return response()->json(['message' => 'Task creado correctamente.', 'task' => $task], 201);
         } catch (\Exception $e) {
@@ -68,7 +68,7 @@ class TaskController extends Controller
 
     public function view($task_id)
     {
-        $task = Task::with('meeting_id', 'created_by', 'status', 'assigned_to')->findOrFail($task_id);
+        $task = Task::with('meeting', 'created_by', 'status', 'assigned_to', 'reviewed_by')->findOrFail($task_id);
         return response()->json(['task' => $task]);
     }
 

@@ -32,7 +32,7 @@ class Task extends Model
         'status'
     ];
 
-    public function meeting_id(): BelongsTo
+    public function meeting(): BelongsTo
     {
         return $this->belongsTo(Meeting::class, 'meeting_id', 'meeting_id');
     }
@@ -50,5 +50,10 @@ class Task extends Model
     public function assigned_to(): BelongsTo
     {
         return $this->belongsTo(Person::class, 'assigned_to', 'person_id');
+    }
+
+    public function reviewed_by(): BelongsTo
+    {
+        return $this->belongsTo(Person::class, 'reviewed_by', 'person_id');
     }
 }

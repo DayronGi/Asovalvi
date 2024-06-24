@@ -12,7 +12,7 @@ class ObligationController extends Controller
     {
         $perPage = $request->input('per_page', 15);
 
-        $obligations = Obligation::paginate($perPage);
+        $obligations = Obligation::with('reviewed_by', 'created_by', 'status')->paginate($perPage);
 
         return response()->json($obligations);
     }
@@ -28,7 +28,6 @@ class ObligationController extends Controller
             'quantity' => 'required|integer',
             'period' => 'required|string',
             'alert_time' => 'required|integer',
-            'department_id' => 'required|integer',
             'created_by' => 'required|integer',
             'last_payment' => 'nullable|numeric',
             'expiration_date' => 'nullable|date',
@@ -53,7 +52,6 @@ class ObligationController extends Controller
             $obligation->quantity = $request->quantity;
             $obligation->period = $request->period;
             $obligation->alert_time = $request->alert_time;
-            $obligation->department_id = $request->department_id;
             $obligation->created_by = $request->created_by;
             $obligation->last_payment = $request->last_payment;
             $obligation->expiration_date = $request->expiration_date;
@@ -65,6 +63,8 @@ class ObligationController extends Controller
 
             $obligation->save();
 
+            $obligation->load('reviewed_by', 'created_by', 'status');
+
             return response()->json(['message' => 'Obligation creado correctamente.', 'obligation' => $obligation], 201);
         } catch (\Exception $e) {
             \Log::error($e->getMessage());
@@ -74,7 +74,7 @@ class ObligationController extends Controller
 
     public function view($obligation_id)
     {
-        $obligation = Obligation::findORfail($obligation_id);
+        $obligation = Obligation::with('reviewed_by', 'created_by', 'status')->findORfail($obligation_id);
         return response()->json(['obligation' => $obligation]);
     }
 
@@ -89,7 +89,6 @@ class ObligationController extends Controller
             'quantity' => 'required|integer',
             'period' => 'required|string',
             'alert_time' => 'required|integer',
-            'department_id' => 'required|integer',
             'created_by' => 'required|integer',
             'last_payment' => 'nullable|numeric',
             'expiration_date' => 'nullable|date',
@@ -113,7 +112,6 @@ class ObligationController extends Controller
                 'quantity' => $request->quantity,
                 'period' => $request->period,
                 'alert_time' => $request->alert_time,
-                'department_id' => $request->department_id,
                 'created_by' => $request->created_by,
                 'last_payment' => $request->last_payment,
                 'expiration_date' => $request->expiration_date,
