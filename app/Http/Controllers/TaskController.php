@@ -76,7 +76,7 @@ class TaskController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'start_date' => 'required|string',
+            'start_date' => 'nullable|string',
             'estimated_time' => 'nullable|integer',
             'units' => 'nullable|string',
             'type_id' => 'required|integer',
