@@ -34,8 +34,7 @@ class ObligationController extends Controller
             'observations' => 'required|string',
             'internal_reference' => 'nullable|string',
             'reviewed_by' => 'nullable|integer',
-            'review_date' => 'nullable|string',
-            'status' => 'required|integer'
+            'review_date' => 'nullable|string'
         ]);
 
         if ($validator->fails()) {

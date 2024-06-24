@@ -28,8 +28,6 @@ class MeetingController extends Controller
             'empty_field' => 'nullable|string',
             'topics' => 'required|string',
             'created_by' => 'nullable|integer',
-            'creation_date' => 'required|string',
-            'status' => 'required|integer'
         ]);
 
         if ($validator->fails()) {

@@ -28,10 +28,8 @@ class TaskController extends Controller
             'assigned_to' => 'required|string',
             'observations' => 'nullable|string',
             'created_by' => 'nullable|integer',
-            'creation_date' => 'required|date',
             'reviewed_by' => 'nullable|integer',
-            'review_date' => 'nullable|date',
-            'status' => 'required|string'
+            'review_date' => 'nullable|date'
         ]);
 
         if ($validator->fails()) {
