@@ -81,9 +81,7 @@ class TaskController extends Controller
             'units' => 'nullable|string',
             'type_id' => 'required|integer',
             'task_description' => 'required|string',
-            'assigned_to' => 'nullable|integer',
             'observations' => 'nullable|string',
-            'created_by' => 'nullable|integer',
             'reviewed_by' => 'nullable|integer',
             'review_date' => 'nullable|date',
         ]);
@@ -100,9 +98,7 @@ class TaskController extends Controller
                 'units' => $request->units,
                 'type_id' => $request->type_id,
                 'task_description' => $request->task_description,
-                'assigned_to' => $request->assigned_to,
                 'observations' => $request->observations,
-                'created_by' => $request->created_by,
                 'reviewed_by' => $request->reviewed_by,
                 'review_date' => $request->review_date,
             ]);

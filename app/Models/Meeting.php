@@ -19,7 +19,6 @@ class Meeting extends Model
     protected $fillable = [
         'meeting_date',
         'start_hour',
-        'department_id',
         'called_by',
         'placement',
         'meeting_description',
@@ -32,7 +31,7 @@ class Meeting extends Model
 
     public function called_by(): BelongsTo
     {
-        return $this->belongsTo(Person::class, 'reviewed_by', 'person_id');
+        return $this->belongsTo(Person::class, 'called_by', 'person_id');
     }
 
     public function created_by(): BelongsTo
