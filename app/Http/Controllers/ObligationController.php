@@ -30,11 +30,11 @@ class ObligationController extends Controller
             'alert_time' => 'required|integer',
             'created_by' => 'required|integer',
             'last_payment' => 'nullable|numeric',
-            'expiration_date' => 'nullable|date',
+            'expiration_date' => 'nullable|string',
             'observations' => 'required|string',
             'internal_reference' => 'nullable|string',
             'reviewed_by' => 'nullable|integer',
-            'review_date' => 'nullable|date',
+            'review_date' => 'nullable|string',
             'status' => 'required|integer'
         ]);
 
@@ -90,11 +90,11 @@ class ObligationController extends Controller
             'period' => 'required|string',
             'alert_time' => 'required|integer',
             'last_payment' => 'nullable|numeric',
-            'expiration_date' => 'nullable|date',
+            'expiration_date' => 'nullable|string',
             'observations' => 'required|string',
             'internal_reference' => 'nullable|string',
             'reviewed_by' => 'nullable|integer',
-            'review_date' => 'nullable|date'
+            'review_date' => 'nullable|string'
         ]);
 
         if ($validator->fails()) {

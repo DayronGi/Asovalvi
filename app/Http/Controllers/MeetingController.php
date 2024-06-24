@@ -21,15 +21,15 @@ class MeetingController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'meeting_id' => 'required|integer',
-            'meeting_date' => 'required|date',
-            'start_hour' => 'nullable|date',
+            'meeting_date' => 'required|string',
+            'start_hour' => 'nullable|string',
             'called_by' => 'required|integer',
             'placement' => 'nullable|string',
             'meeting_description' => 'required|string',
             'empty_field' => 'nullable|string',
             'topics' => 'required|string',
             'created_by' => 'nullable|integer',
-            'creation_date' => 'required|date',
+            'creation_date' => 'required|string',
             'status' => 'required|integer'
         ]);
 
@@ -48,7 +48,7 @@ class MeetingController extends Controller
             $meeting->empty_field = $request->empty_field;
             $meeting->topics = $request->topics;
             $meeting->created_by = $request->created_by;
-            $meeting->creation_date = $request->creation_date;
+            $meeting->creation_date = \Carbon\Carbon::now();
             $meeting->status = 2;
 
             $meeting->save();
@@ -73,8 +73,8 @@ class MeetingController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'meeting_date' => 'required|date',
-            'start_hour' => 'nullable|date',
+            'meeting_date' => 'required|string',
+            'start_hour' => 'nullable|string',
             'placement' => 'nullable|string',
             'meeting_description' => 'required|string',
             'empty_field' => 'nullable|string',
