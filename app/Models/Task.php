@@ -21,7 +21,6 @@ class Task extends Model
         'start_date',
         'estimated_time',
         'units',
-        'type_id',
         'task_description',
         'assigned_to',
         'observations',

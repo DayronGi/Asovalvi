@@ -20,9 +20,7 @@ class ObligationController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'obligation_id' => 'required|integer',
             'obligation_description' => 'required|string',
-            'type_id' => 'required|integer',
             'category_id' => 'required|integer',
             'server_name' => 'nullable|string',
             'quantity' => 'required|integer',
@@ -45,7 +43,6 @@ class ObligationController extends Controller
             $obligation = new Obligation();
             $obligation->obligation_id = $request->obligation_id;
             $obligation->obligation_description = $request->obligation_description;
-            $obligation->type_id = $request->type_id;
             $obligation->category_id = $request->category_id;
             $obligation->server_name = $request->server_name;
             $obligation->quantity = $request->quantity;
@@ -82,7 +79,6 @@ class ObligationController extends Controller
 
         $validator = Validator::make($request->all(), [
             'obligation_description' => 'required|string',
-            'type_id' => 'required|integer',
             'category_id' => 'required|integer',
             'server_name' => 'nullable|string',
             'quantity' => 'required|integer',
@@ -104,7 +100,6 @@ class ObligationController extends Controller
             $obligation = Obligation::findORfail($obligation_id);
             $obligation->update([
                 'obligation_description' => $request->obligation_description,
-                'type_id' => $request->type_id,
                 'category_id' => $request->category_id,
                 'server_name' => $request->server_name,
                 'quantity' => $request->quantity,

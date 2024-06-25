@@ -20,7 +20,7 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'meeting_id' => 'required|integer',
+            'meeting_id' => 'nullable|integer',
             'start_date' => 'required|date',
             'estimated_time' => 'required|integer',
             'units' => 'required|string',
@@ -43,7 +43,6 @@ class TaskController extends Controller
             $task->start_date = $request->start_date;
             $task->estimated_time = $request->estimated_time;
             $task->units = $request->units;
-            $task->type_id = $request->type_id;
             $task->task_description = $request->task_description;
             $task->assigned_to = $request->assigned_to;
             $task->observations = $request->observations;
@@ -77,7 +76,6 @@ class TaskController extends Controller
             'start_date' => 'nullable|string',
             'estimated_time' => 'nullable|integer',
             'units' => 'nullable|string',
-            'type_id' => 'required|integer',
             'task_description' => 'required|string',
             'observations' => 'nullable|string',
             'reviewed_by' => 'nullable|integer',
@@ -94,7 +92,6 @@ class TaskController extends Controller
                 'start_date' => $request->start_date,
                 'estimated_time' => $request->estimated_time,
                 'units' => $request->units,
-                'type_id' => $request->type_id,
                 'task_description' => $request->task_description,
                 'observations' => $request->observations,
                 'reviewed_by' => $request->reviewed_by,

@@ -19,7 +19,6 @@ class Obligation extends Model
     protected $fillable = [
         'obligation_id',
         'obligation_description',
-        'type_id',
         'category_id',
         'server_name',
         'quantity',
