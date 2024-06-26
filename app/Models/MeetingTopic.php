@@ -14,4 +14,13 @@ class MeetingTopic extends Model
     protected $primaryKey = 'topic_id';
 
     public $timestamps = false;
+
+    protected $fillable = [
+        'meeting_id',
+        'type',
+        'topic',
+        'created_by',
+        'creation_date',
+        'status'
+    ];
 }

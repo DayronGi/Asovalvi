@@ -42,10 +42,10 @@ class TopicController extends Controller
         }
     }
 
-    public function delete($meeting_id)
+    public function delete($topic_id)
     {
-        $meeting = MeetingTopic::findORfail($meeting_id);
-        $meeting->update([
+        $topic = MeetingTopic::findORfail($topic_id);
+        $topic->update([
             'status' => 1
         ]);
         return response()->json(['message' => 'Topic eliminado correctamente.']);
