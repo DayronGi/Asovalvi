@@ -5,6 +5,7 @@ use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\ObligationController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TopicController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)->group(function() {
@@ -41,5 +42,10 @@ Route::controller(StateController::class)->middleware('auth:sanctum')->group(fun
     Route::get('/status/tasks', 'tasks');
     Route::get('/status/meetings', 'meetings');
     Route::get('/status/obligations', 'obligations');
+});
+
+Route::controller(TopicController::class)->middleware('auth:sanctum')->group(function() {
+    Route::get('/topics/store', 'store');
+    Route::get('/topics/delete', 'delete');
 });
 
