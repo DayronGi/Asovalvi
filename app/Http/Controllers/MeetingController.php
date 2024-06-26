@@ -12,7 +12,7 @@ class MeetingController extends Controller
     {
         $perPage = $request->input('per_page', 15);
 
-        $meetings = Meeting::with('called_by', 'created_by', 'status')->paginate($perPage);
+        $meetings = Meeting::with('called_by', 'created_by', 'topic', 'status')->paginate($perPage);
 
         return response()->json($meetings);
     }
@@ -49,7 +49,7 @@ class MeetingController extends Controller
 
             $meeting->save();
 
-            $meeting->load('called_by', 'created_by', 'status');
+            $meeting->load('called_by', 'created_by', 'topic', 'status');
 
             return response()->json(['message' => 'meeting creado correctamente.', 'meeting' => $meeting], 201);
         } catch (\Exception $e) {
@@ -61,7 +61,7 @@ class MeetingController extends Controller
 
     public function view($meeting_id)
     {
-        $meeting = Meeting::with('called_by', 'created_by', 'status')->findORfail($meeting_id);
+        $meeting = Meeting::with('called_by', 'created_by', 'topic', 'status')->findORfail($meeting_id);
         return response()->json(['meeting' => $meeting]);
     }
 

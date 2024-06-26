@@ -7,6 +7,12 @@ use App\Http\Controllers\StateController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
+Route::controller(AuthController::class)->group(function() {
+    Route::post('/register', 'register');
+    Route::post('/login', 'login');
+    Route::post('/logout', 'logout');
+});
+
 Route::controller(TaskController::class)->middleware('auth:sanctum')->group(function() {
     Route::get('/tasks', 'list');
     Route::post('/tasks', 'store');
@@ -37,6 +43,3 @@ Route::controller(StateController::class)->middleware('auth:sanctum')->group(fun
     Route::get('/status/obligations', 'obligations');
 });
 
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout']);

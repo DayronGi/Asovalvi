@@ -43,4 +43,9 @@ class Meeting extends Model
     {
         return $this->belongsTo(State::class, 'status', 'status');
     }
+
+    public function topic(): BelongsTo
+    {
+        return $this->belongsTo(MeetingTopic::class, 'meeting_id', 'meeting_id');
+    }
 }
