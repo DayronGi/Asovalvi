@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Validator;
 
 class TopicController extends Controller
 {
+
+    public function list()
+    {
+        $topics = MeetingTopic::all();
+        return response()->json($topics);
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
