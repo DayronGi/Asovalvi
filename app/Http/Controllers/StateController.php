@@ -9,6 +9,8 @@ class StateController extends Controller
     public function tasks()
     {
         $status = [
+            'Inactivo',
+            'Activo',
             'Pendiente',
             'Asignada',
             'Completada',
@@ -21,9 +23,7 @@ class StateController extends Controller
     public function meetings()
     {
         $status = [
-            'Eliminado',
             'Creado',
-            'Aplazado',
             'Realizado'
         ];
 
