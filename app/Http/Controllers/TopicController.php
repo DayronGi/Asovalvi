@@ -49,6 +49,12 @@ class TopicController extends Controller
         }
     }
 
+    public function view($meeting_id)
+    {
+        $topic = MeetingTopic::all()->where('meeting_id', $meeting_id);
+        return response()->json(['topic' => $topic]);
+    }
+
     public function delete($topic_id)
     {
         $topic = MeetingTopic::findORfail($topic_id);
