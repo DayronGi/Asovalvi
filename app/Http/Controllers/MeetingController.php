@@ -26,7 +26,7 @@ class MeetingController extends Controller
             'placement' => 'nullable|string',
             'meeting_description' => 'required|string',
             'empty_field' => 'nullable|string',
-            'topics' => 'required|string',
+            'topics' => 'nullable|string',
             'created_by' => 'nullable|integer',
         ]);
 
@@ -74,7 +74,7 @@ class MeetingController extends Controller
             'placement' => 'nullable|string',
             'meeting_description' => 'required|string',
             'empty_field' => 'nullable|string',
-            'topics' => 'required|string',
+            'topics' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {

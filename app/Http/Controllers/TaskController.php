@@ -25,7 +25,7 @@ class TaskController extends Controller
             'estimated_time' => 'required|integer',
             'units' => 'required|string',
             'task_description' => 'required|string',
-            'assigned_to' => 'required|string',
+            'assigned_to' => 'nullable|string',
             'observations' => 'nullable|string',
             'created_by' => 'nullable|integer',
             'reviewed_by' => 'nullable|integer',
@@ -46,7 +46,7 @@ class TaskController extends Controller
             $task->task_description = $request->task_description;
             $task->assigned_to = $request->assigned_to;
             $task->observations = $request->observations;
-            $task->created_by = $request->created_by;
+            $task->created_by = 1;
             $task->creation_date = \Carbon\Carbon::now();
             $task->reviewed_by = $request->reviewed_by;
             $task->review_date = $request->review_date;
