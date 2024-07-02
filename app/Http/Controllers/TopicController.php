@@ -51,8 +51,8 @@ class TopicController extends Controller
 
     public function view($meeting_id)
     {
-        $topic = MeetingTopic::all()->where('meeting_id', $meeting_id);
-        return response()->json(['topic' => $topic]);
+        $topics = MeetingTopic::all()->where('meeting_id', $meeting_id);
+        return response()->json(['topics' => $topics]);
     }
 
     public function delete($topic_id)
