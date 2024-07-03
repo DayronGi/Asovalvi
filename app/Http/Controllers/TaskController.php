@@ -12,7 +12,7 @@ class TaskController extends Controller
     {
         $perPage = $request->input('per_page', 15);
 
-        $tasks = Task::with('meeting', 'created_by', 'status', 'assigned_to', 'reviewed_by')->paginate($perPage);
+        $tasks = Task::with('meeting', 'created_by', 'status', 'assigned_to', 'reviewed_by')->orderBy('status', 'desc')->paginate($perPage);
 
         return response()->json($tasks);
     }

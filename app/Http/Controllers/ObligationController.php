@@ -12,7 +12,7 @@ class ObligationController extends Controller
     {
         $perPage = $request->input('per_page', 15);
 
-        $obligations = Obligation::with('reviewed_by', 'created_by', 'status')->paginate($perPage);
+        $obligations = Obligation::with('reviewed_by', 'created_by', 'status')->orderBy('status', 'desc')->paginate($perPage);
 
         return response()->json($obligations);
     }

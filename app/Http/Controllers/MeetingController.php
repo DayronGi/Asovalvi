@@ -12,7 +12,7 @@ class MeetingController extends Controller
     {
         $perPage = $request->input('per_page', 15);
 
-        $meetings = Meeting::with('called_by', 'created_by', 'topics', 'status')->orderBy('status')->paginate($perPage);
+        $meetings = Meeting::with('called_by', 'created_by', 'topics', 'status')->orderBy('status', 'desc')->paginate($perPage);
 
         return response()->json($meetings);
     }
