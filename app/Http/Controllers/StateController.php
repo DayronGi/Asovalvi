@@ -9,8 +9,6 @@ class StateController extends Controller
     public function tasks()
     {
         $status = [
-            'Inactivo',
-            'Activo',
             'Pendiente',
             'Asignada',
             'Completada',

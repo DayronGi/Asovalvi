@@ -22,8 +22,8 @@ class TopicController extends Controller
             'type' => 'required|string',
             'topic' => 'required|string',
             'created_by' => 'required|integer',
-            'creation_date' => 'required|string',
-            'status' => 'required|integer',
+            'creation_date' => 'nullable|string',
+            'status' => 'nullable|integer',
         ]);
 
         if ($validator->fails()) {
