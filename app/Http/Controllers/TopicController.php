@@ -51,7 +51,7 @@ class TopicController extends Controller
 
     public function view($meeting_id)
     {
-        $topics = MeetingTopic::all()->where('meeting_id', $meeting_id);
+        $topics = MeetingTopic::where('meeting_id', $meeting_id)->get()->toArray();
         return response()->json(['topics' => $topics]);
     }
 
