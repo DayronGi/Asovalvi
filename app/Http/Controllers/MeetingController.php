@@ -73,7 +73,7 @@ class MeetingController extends Controller
         $validator = Validator::make($request->all(), [
             'meeting_date' => 'required|string',
             'start_hour' => 'nullable|string',
-            'called_by' => 'required|integer',
+            'called_by' => 'nullable|integer',
             'placement' => 'nullable|string',
             'meeting_description' => 'required|string',
             'empty_field' => 'nullable|string',
