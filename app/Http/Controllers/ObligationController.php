@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Obligation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ObligationController extends Controller
@@ -12,7 +13,7 @@ class ObligationController extends Controller
     {
         $perPage = $request->input('per_page', 15);
 
-        $obligations = Obligation::with('reviewed_by', 'created_by', 'status')->orderBy('status', 'desc')->paginate($perPage);
+        $obligations = Obligation::with('reviewed_by', 'created_by', 'status')->orderBy('status', 'asc')->paginate($perPage);
 
         return response()->json($obligations);
     }
@@ -40,6 +41,8 @@ class ObligationController extends Controller
         }
 
         try {
+            $user = Auth::user();
+
             $obligation = new Obligation();
             $obligation->obligation_id = $request->obligation_id;
             $obligation->obligation_description = $request->obligation_description;
@@ -48,7 +51,7 @@ class ObligationController extends Controller
             $obligation->quantity = $request->quantity;
             $obligation->period = $request->period;
             $obligation->alert_time = $request->alert_time;
-            $obligation->created_by = $request->created_by;
+            $obligation->created_by = $user->id;
             $obligation->last_payment = $request->last_payment;
             $obligation->expiration_date = $request->expiration_date;
             $obligation->observations = $request->observations;

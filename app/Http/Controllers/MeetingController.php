@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Meeting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class MeetingController extends Controller
@@ -12,7 +13,7 @@ class MeetingController extends Controller
     {
         $perPage = $request->input('per_page', 15);
 
-        $meetings = Meeting::with('called_by', 'created_by', 'topics', 'status')->orderBy('status', 'desc')->paginate($perPage);
+        $meetings = Meeting::with('called_by', 'created_by', 'topics', 'status')->orderBy('status', 'asc')->paginate($perPage);
 
         return response()->json($meetings);
     }
@@ -27,7 +28,6 @@ class MeetingController extends Controller
             'meeting_description' => 'required|string',
             'empty_field' => 'nullable|string',
             'topics' => 'nullable|string',
-            'created_by' => 'nullable|integer',
         ]);
 
         if ($validator->fails()) {
@@ -35,6 +35,8 @@ class MeetingController extends Controller
         }
 
         try {
+            $user = Auth::user();
+
             $meeting = new Meeting();
             $meeting->meeting_date = $request->meeting_date;
             $meeting->start_hour = $request->start_hour;
@@ -43,7 +45,7 @@ class MeetingController extends Controller
             $meeting->meeting_description = $request->meeting_description;
             $meeting->empty_field = $request->empty_field;
             $meeting->topics = $request->topics;
-            $meeting->created_by = $request->created_by;
+            $meeting->created_by = $user->id;
             $meeting->creation_date = \Carbon\Carbon::now();
             $meeting->status = 2;
 

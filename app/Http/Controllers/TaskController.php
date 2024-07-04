@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
@@ -12,7 +13,7 @@ class TaskController extends Controller
     {
         $perPage = $request->input('per_page', 15);
 
-        $tasks = Task::with('meeting', 'created_by', 'status', 'assigned_to', 'reviewed_by')->orderBy('status', 'desc')->paginate($perPage);
+        $tasks = Task::with('meeting', 'created_by', 'status', 'assigned_to', 'reviewed_by')->orderBy('status', 'asc')->paginate($perPage);
 
         return response()->json($tasks);
     }
@@ -37,6 +38,8 @@ class TaskController extends Controller
         }
 
         try {
+            $user = Auth::user();
+
             $task = new Task();
             $task->task_id = $request->task_id;
             $task->meeting_id = $request->meeting_id;
@@ -46,7 +49,7 @@ class TaskController extends Controller
             $task->task_description = $request->task_description;
             $task->assigned_to = $request->assigned_to;
             $task->observations = $request->observations;
-            $task->created_by = 1;
+            $task->created_by = $user->id;
             $task->creation_date = \Carbon\Carbon::now();
             $task->reviewed_by = $request->reviewed_by;
             $task->review_date = $request->review_date;
