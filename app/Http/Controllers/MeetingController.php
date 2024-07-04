@@ -13,11 +13,9 @@ class MeetingController extends Controller
     {
         $perPage = $request->input('per_page', 15);
 
-        // $meetings = Meeting::with('called_by', 'created_by', 'topics', 'status')->orderBy('status', 'asc')->paginate($perPage);
+        $meetings = Meeting::with('called_by', 'created_by', 'topics', 'status')->orderBy('status', 'asc')->paginate($perPage);
 
-        $user = Auth::user();
-
-        return response()->json( $user);
+        return response()->json($meetings);
     }
 
     public function store(Request $request)
