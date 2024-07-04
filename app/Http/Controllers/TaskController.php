@@ -53,7 +53,7 @@ class TaskController extends Controller
             $task->creation_date = \Carbon\Carbon::now();
             $task->reviewed_by = $request->reviewed_by;
             $task->review_date = $request->review_date;
-            $task->status = 2;
+            $task->status = empty($request->assigned_to) ? 5 : 6;
 
             $task->save();
 
@@ -107,12 +107,21 @@ class TaskController extends Controller
         }
     }
 
-    public function delete($obligation_id)
+    public function reject($obligation_id)
     {
         $obligation = Task::findORfail($obligation_id);
         $obligation->update([
-            'status' => 1
+            'status' => 8
         ]);
-        return response()->json(['message' => 'Task eliminado correctamente.']);
+        return response()->json(['message' => 'Task rechazado correctamente.']);
+    }
+
+    public function complete($obligation_id)
+    {
+        $obligation = Task::findORfail($obligation_id);
+        $obligation->update([
+            'status' => 7
+        ]);
+        return response()->json(['message' => 'Task realizado correctamente.']);
     }
 }

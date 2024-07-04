@@ -47,7 +47,7 @@ class MeetingController extends Controller
             $meeting->topics = $request->topics;
             $meeting->created_by = $user->id;
             $meeting->creation_date = \Carbon\Carbon::now();
-            $meeting->status = 2;
+            $meeting->status = 3;
 
             $meeting->save();
 
@@ -100,12 +100,12 @@ class MeetingController extends Controller
         }
     }
 
-    public function delete($meeting_id)
+    public function complete($meeting_id)
     {
         $meeting = Meeting::findORfail($meeting_id);
         $meeting->update([
-            'status' => 1
+            'status' => 4
         ]);
-        return response()->json(['message' => 'Meeting eliminado correctamente.']);
+        return response()->json(['message' => 'Meeting realizado correctamente.']);
     }
 }

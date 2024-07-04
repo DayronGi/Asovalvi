@@ -19,7 +19,8 @@ Route::controller(TaskController::class)->middleware('auth:sanctum')->group(func
     Route::post('/tasks', 'store');
     Route::get('/tasks/{task_id}', 'view');
     Route::put('/tasks/{task_id}/update', 'update');
-    Route::put('/tasks/{task_id}/delete', 'delete');
+    Route::put('/tasks/{task_id}/reject', 'reject');
+    Route::put('/tasks/{task_id}/complete', 'complete');
 });
 
 Route::controller(MeetingController::class)->middleware('auth:sanctum')->group(function() {
@@ -27,7 +28,7 @@ Route::controller(MeetingController::class)->middleware('auth:sanctum')->group(f
     Route::post('/meetings', 'store');
     Route::get('/meetings/{meeting_id}', 'view');
     Route::put('/meetings/{meeting_id}/update', 'update');
-    Route::put('/meetings/{meeting_id}/delete', 'delete');
+    Route::put('/meetings/{meeting_id}/complete', 'complete');
 });
 
 Route::controller(ObligationController::class)->middleware('auth:sanctum')->group(function() {
