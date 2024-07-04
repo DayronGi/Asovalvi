@@ -31,12 +31,12 @@ class Meeting extends Model
 
     public function called_by(): BelongsTo
     {
-        return $this->belongsTo(Person::class, 'called_by', 'person_id');
+        return $this->belongsTo(User::class, 'called_by', 'id');
     }
 
     public function created_by(): BelongsTo
     {
-        return $this->belongsTo(Person::class, 'created_by', 'person_id');
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
     public function status(): BelongsTo

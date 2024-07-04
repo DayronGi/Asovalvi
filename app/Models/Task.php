@@ -38,7 +38,7 @@ class Task extends Model
 
     public function created_by(): BelongsTo
     {
-        return $this->belongsTo(Person::class, 'created_by', 'person_id');
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
     public function status(): BelongsTo
@@ -48,11 +48,11 @@ class Task extends Model
 
     public function assigned_to(): BelongsTo
     {
-        return $this->belongsTo(Person::class, 'assigned_to', 'person_id');
+        return $this->belongsTo(User::class, 'assigned_to', 'id');
     }
 
     public function reviewed_by(): BelongsTo
     {
-        return $this->belongsTo(Person::class, 'reviewed_by', 'person_id');
+        return $this->belongsTo(User::class, 'reviewed_by', 'id');
     }
 }

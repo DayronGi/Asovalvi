@@ -36,12 +36,12 @@ class Obligation extends Model
 
     public function reviewed_by(): BelongsTo
     {
-        return $this->belongsTo(Person::class, 'reviewed_by', 'person_id');
+        return $this->belongsTo(User::class, 'reviewed_by', 'id');
     }
 
     public function created_by(): BelongsTo
     {
-        return $this->belongsTo(Person::class, 'created_by', 'person_id');
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
     public function status(): BelongsTo
