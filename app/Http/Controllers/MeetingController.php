@@ -73,6 +73,7 @@ class MeetingController extends Controller
         $validator = Validator::make($request->all(), [
             'meeting_date' => 'required|string',
             'start_hour' => 'nullable|string',
+            'called_by' => 'required|integer',
             'placement' => 'nullable|string',
             'meeting_description' => 'required|string',
             'empty_field' => 'nullable|string',
@@ -88,6 +89,7 @@ class MeetingController extends Controller
             $meeting->update([
                 'meeting_date' => $request->meeting_date,
                 'start_hour' => $request->start_hour,
+                'called_by' => $request->called_by,
                 'placement' => $request->placement,
                 'meeting_description' => $request->meeting_description,
                 'empty_field' => $request->empty_field,
