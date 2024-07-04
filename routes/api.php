@@ -6,6 +6,7 @@ use App\Http\Controllers\ObligationController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TopicController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)->group(function() {
@@ -50,5 +51,9 @@ Route::controller(TopicController::class)->middleware('auth:sanctum')->group(fun
     Route::post('/topics/store', 'store');
     Route::get('/topics/{meeting_id}', 'view');
     Route::post('/topics/{topic_id}/delete', 'delete');
+});
+
+Route::controller(UserController::class)->middleware('auth:sanctum')->group(function() {
+    Route::get('/users', 'list');
 });
 
