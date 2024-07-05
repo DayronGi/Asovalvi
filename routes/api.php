@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssistantController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\ObligationController;
@@ -48,9 +49,15 @@ Route::controller(StateController::class)->middleware('auth:sanctum')->group(fun
 
 Route::controller(TopicController::class)->middleware('auth:sanctum')->group(function() {
     Route::get('/topics', 'list');
-    Route::post('/topics/store', 'store');
+    Route::post('/topics', 'store');
     Route::get('/topics/{meeting_id}', 'view');
-    Route::post('/topics/{topic_id}/delete', 'delete');
+    Route::put('/topics/{topic_id}/delete', 'delete');
+});
+
+Route::controller(AssistantController::class)->middleware('auth:sanctum')->group(function() {
+    Route::get('/assistants', 'list');
+    Route::post('/assistants', 'store');
+    Route::put('/assistants/{meeting_id}/delete', 'delete');
 });
 
 Route::controller(UserController::class)->middleware('auth:sanctum')->group(function() {
