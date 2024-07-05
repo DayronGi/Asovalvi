@@ -26,7 +26,7 @@ class TaskController extends Controller
             'estimated_time' => 'required|integer',
             'units' => 'required|string',
             'task_description' => 'required|string',
-            'assigned_to' => 'nullable|string',
+            'assigned_to' => 'nullable|integer',
             'observations' => 'nullable|string',
             'created_by' => 'nullable|integer',
             'reviewed_by' => 'nullable|integer',
@@ -80,7 +80,7 @@ class TaskController extends Controller
             'estimated_time' => 'nullable|integer',
             'units' => 'nullable|string',
             'task_description' => 'required|string',
-            'assigned_to' => 'nullable|string',
+            'assigned_to' => 'nullable|integer',
             'observations' => 'nullable|string',
             'reviewed_by' => 'nullable|integer',
             'review_date' => 'nullable|string',
@@ -101,6 +101,7 @@ class TaskController extends Controller
                 'observations' => $request->observations,
                 'reviewed_by' => $request->reviewed_by,
                 'review_date' => $request->review_date,
+                'status' => empty($request->assigned_to) ? 5 : 6
             ]);
             return response()->json(['message' => 'Task actualizado correctamente.']);
         } catch (\Exception $e) {
