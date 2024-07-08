@@ -17,8 +17,7 @@ class AssistantController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'worker_id' => 'required|integer',
-            'stamp' => 'required|string',
+            'user_id' => 'required|integer'
         ]);
 
         if ($validator->fails()) {
@@ -27,8 +26,34 @@ class AssistantController extends Controller
 
         try {
             $assistant = new MeetingAssistant();
-            $assistant->worker_id = $request->worker_id;
-            $assistant->stamp = $request->stamp;
+            $assistant->user_id = $request->worker_id;
+            $assistant->status = 2;
+
+            $assistant->save();
+
+            return response()->json(['message' => 'Assistant creado correctamente.', 'assistant' => $assistant], 201);
+        } catch (\Exception $e) {
+
+            \Log::error($e->getMessage());
+            return response()->json(['error' => 'Error al intentar guardar assistant.', 'exception' => $e->getMessage()], 500);
+        }
+    }
+
+    public function store_assistants(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer',
+            'meeting_id' => 'required|integer'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        try {
+            $assistant = new MeetingAssistant();
+            $assistant->user_id = $request->user_id;
+            $assistant->meeting_id = $request->meeting_id;
             $assistant->status = 2;
 
             $assistant->save();
