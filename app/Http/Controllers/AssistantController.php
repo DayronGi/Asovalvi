@@ -40,31 +40,38 @@ class AssistantController extends Controller
     }
 
     public function store_assistants(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required|integer',
-            'meeting_id' => 'required|integer'
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'user_ids' => 'required|array',
+        'user_ids.*' => 'required|integer|exists:users,id', // Asegúrate de que los IDs de usuario existan en la tabla de usuarios
+        'meeting_id' => 'required|integer|exists:meetings,meeting_id' // Asegúrate de que el ID de la reunión exista en la tabla de reuniones
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
-        }
-
-        try {
-            $assistant = new MeetingAssistant();
-            $assistant->user_id = $request->user_id;
-            $assistant->meeting_id = $request->meeting_id;
-            $assistant->status = 2;
-
-            $assistant->save();
-
-            return response()->json(['message' => 'Assistant creado correctamente.', 'assistant' => $assistant], 201);
-        } catch (\Exception $e) {
-
-            \Log::error($e->getMessage());
-            return response()->json(['error' => 'Error al intentar guardar assistant.', 'exception' => $e->getMessage()], 500);
-        }
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 400);
     }
+
+    try {
+        $meetingId = $request->meeting_id;
+        $userIds = $request->user_ids;
+
+        $assistants = [];
+        foreach ($userIds as $userId) {
+            $assistant = new MeetingAssistant();
+            $assistant->user_id = $userId;
+            $assistant->meeting_id = $meetingId;
+            $assistant->status = 2;
+            $assistant->save();
+            $assistants[] = $assistant;
+        }
+
+        return response()->json(['message' => 'Assistants creados correctamente.', 'assistants' => $assistants], 201);
+    } catch (\Exception $e) {
+        \Log::error($e->getMessage());
+        return response()->json(['error' => 'Error al intentar guardar assistants.', 'exception' => $e->getMessage()], 500);
+    }
+}
+
 
     public function view($meeting_id)
     {
