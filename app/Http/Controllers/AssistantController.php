@@ -11,7 +11,7 @@ class AssistantController extends Controller
     public function list()
     {
         $assistants = MeetingAssistant::with(['user:id,first_name,last_name'])->get();
-        return response()->json($assistants);
+        return response()->json([ 'assistants' => $assistants]);
     }
 
     public function store(Request $request)
