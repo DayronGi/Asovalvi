@@ -10,7 +10,7 @@ class AssistantController extends Controller
 {
     public function list()
     {
-        $assistants = MeetingAssistant::with(['user:id,first_name,last_name'])->get();
+        $assistants = MeetingAssistant::with(['user_id:id,first_name,last_name'])->get();
         return response()->json([ 'assistants' => $assistants]);
     }
 
@@ -68,7 +68,7 @@ class AssistantController extends Controller
 
     public function view($meeting_id)
     {
-        $assistants = MeetingAssistant::with(['user:id,first_name,last_name'])->where('meeting_id', $meeting_id)->get()->toArray();
+        $assistants = MeetingAssistant::with(['user_id:id,first_name,last_name'])->where('meeting_id', $meeting_id)->get()->toArray();
         return response()->json(['assistants' => $assistants]);
     }
 
