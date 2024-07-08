@@ -79,9 +79,9 @@ class AssistantController extends Controller
         return response()->json(['assistants' => $assistants]);
     }
 
-    public function delete($meeting_id)
+    public function delete($user_id)
     {
-        $assistant = MeetingAssistant::findORfail($meeting_id);
+        $assistant = MeetingAssistant::findORfail($user_id);
         $assistant->update([
             'status' => 1
         ]);
