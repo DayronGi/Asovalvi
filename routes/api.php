@@ -50,6 +50,7 @@ Route::controller(StateController::class)->middleware('auth:sanctum')->group(fun
 Route::controller(TopicController::class)->middleware('auth:sanctum')->group(function() {
     Route::get('/topics', 'list');
     Route::post('/topics', 'store');
+    Route::post('/topics/assistants', 'store_assistants');
     Route::get('/topics/{meeting_id}', 'view');
     Route::put('/topics/{topic_id}/delete', 'delete');
 });
