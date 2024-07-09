@@ -43,8 +43,8 @@ class AssistantController extends Controller
 {
     $validator = Validator::make($request->all(), [
         'user_ids' => 'required|array',
-        'user_ids.*' => 'required|integer|exists:users,id', // Asegúrate de que los IDs de usuario existan en la tabla de usuarios
-        'meeting_id' => 'required|integer|exists:meetings,meeting_id' // Asegúrate de que el ID de la reunión exista en la tabla de reuniones
+        'user_ids.*' => 'required|integer|exists:users,id',
+        'meeting_id' => 'required|integer|exists:meetings,meeting_id'
     ]);
 
     if ($validator->fails()) {
@@ -81,11 +81,10 @@ class AssistantController extends Controller
 
     public function delete($meeting_id, $user_id)
     {
-        // Actualiza el estado del asistente específico
         $updated = MeetingAssistant::where('meeting_id', $meeting_id)
             ->where('user_id', $user_id)
-            ->update(['status' => 1]);
-    
+            ->delete();
+
         if ($updated) {
             return response()->json(['message' => 'Assistant eliminado correctamente.']);
         } else {
