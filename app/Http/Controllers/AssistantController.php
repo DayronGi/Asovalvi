@@ -79,12 +79,17 @@ class AssistantController extends Controller
         return response()->json(['assistants' => $assistants]);
     }
 
-    public function delete($user_id, $meeting_id)
+    public function delete($meeting_id, $user_id)
     {
-        $assistant = MeetingAssistant::findORfail($user_id, $meeting_id);
-        $assistant->update([
-            'status' => 1
-        ]);
-        return response()->json(['message' => 'Assistant eliminado correctamente.']);
+        // Actualiza el estado del asistente específico
+        $updated = MeetingAssistant::where('meeting_id', $meeting_id)
+            ->where('user_id', $user_id)
+            ->update(['status' => 1]);
+    
+        if ($updated) {
+            return response()->json(['message' => 'Assistant eliminado correctamente.']);
+        } else {
+            return response()->json(['message' => 'Asistente no encontrado o no se pudo actualizar.'], 404);
+        }
     }
 }

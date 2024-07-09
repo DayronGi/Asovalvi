@@ -59,7 +59,7 @@ Route::controller(AssistantController::class)->middleware('auth:sanctum')->group
     Route::post('/assistants', 'store');
     Route::post('/assistant_meetings', 'store_assistants');
     Route::get('/assistants/{meeting_id}', 'view');
-    Route::put('/assistants/{meeting_id}/delete', 'delete');
+    Route::put('/assistants/{meeting_id}/delete/{user_id}', 'delete');
 });
 
 Route::controller(UserController::class)->middleware('auth:sanctum')->group(function() {
