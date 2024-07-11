@@ -39,6 +39,8 @@ Route::controller(ObligationController::class)->middleware('auth:sanctum')->grou
     Route::get('/obligations/{obligation_id}', 'view');
     Route::put('/obligations/{obligation_id}/update', 'update');
     Route::put('/obligations/{obligation_id}/delete', 'delete');
+    Route::get('/payments', 'list_payments');
+    Route::post('/payments', 'store_payments');
 });
 
 Route::controller(StateController::class)->middleware('auth:sanctum')->group(function() {
@@ -53,6 +55,7 @@ Route::controller(TopicController::class)->middleware('auth:sanctum')->group(fun
     Route::get('/topics/{meeting_id}', 'view');
     Route::put('/topics/{topic_id}/delete', 'delete');
 });
+
 
 Route::controller(AssistantController::class)->middleware('auth:sanctum')->group(function() {
     Route::get('/assistants', 'list');

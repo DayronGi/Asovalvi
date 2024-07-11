@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Obligation;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -129,5 +130,45 @@ class ObligationController extends Controller
             'status' => 1
         ]);
         return response()->json(['message' => 'Obligation eliminado correctamente.']);
+    }
+
+    public function store_payment(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'date_ini' => 'required|date',
+            'date_end' => 'nullable|date',
+            'paid' => 'required|float',
+            'observations' => 'required|string',
+            'created_by' => 'required|integer',
+            'creation_date' => 'required|date'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        try {
+            $payment = new Payment();
+            $payment->date_ini = $request->date_ini;
+            $payment->date_end = $request->date_end;
+            $payment->paid = $request->paid;
+            $payment->observations = $request->observations;
+            $payment->created_by = $request->created_by;
+            $payment->creation_date = $request->creation_date;
+            $payment->status = 2;
+
+            $payment->save();
+
+            return response()->json(['message' => 'Payment creado correctamente.', 'payment' => $payment], 201);
+        } catch (\Exception $e) {
+            \Log::error($e->getMessage());
+            return response()->json(['error' => 'Error al intentar guardar payment.', 'exception' => $e->getMessage()], 500);
+        }
+    }
+
+    public function list_payments()
+    {
+        $payment = Payment::all();
+        return response()->json($payment);
     }
 }
