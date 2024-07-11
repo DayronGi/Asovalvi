@@ -23,7 +23,6 @@ class ObligationController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'obligation_description' => 'required|string',
-            'server_name' => 'nullable|string',
             'quantity' => 'required|integer',
             'period' => 'required|string',
             'alert_time' => 'required|integer',
@@ -31,7 +30,6 @@ class ObligationController extends Controller
             'last_payment' => 'nullable|numeric',
             'expiration_date' => 'nullable|string',
             'observations' => 'required|string',
-            'internal_reference' => 'nullable|string',
             'reviewed_by' => 'nullable|integer',
             'review_date' => 'nullable|string'
         ]);
@@ -46,7 +44,6 @@ class ObligationController extends Controller
             $obligation = new Obligation();
             $obligation->obligation_id = $request->obligation_id;
             $obligation->obligation_description = $request->obligation_description;
-            $obligation->server_name = $request->server_name;
             $obligation->quantity = $request->quantity;
             $obligation->period = $request->period;
             $obligation->alert_time = $request->alert_time;
@@ -54,7 +51,6 @@ class ObligationController extends Controller
             $obligation->last_payment = $request->last_payment;
             $obligation->expiration_date = $request->expiration_date;
             $obligation->observations = $request->observations;
-            $obligation->internal_reference = $request->internal_reference;
             $obligation->reviewed_by = $request->reviewed_by;
             $obligation->review_date = $request->review_date;
             $obligation->status = 10;
@@ -81,14 +77,12 @@ class ObligationController extends Controller
 
         $validator = Validator::make($request->all(), [
             'obligation_description' => 'required|string',
-            'server_name' => 'nullable|string',
             'quantity' => 'required|integer',
             'period' => 'required|string',
             'alert_time' => 'required|integer',
             'last_payment' => 'nullable|numeric',
             'expiration_date' => 'nullable|string',
             'observations' => 'required|string',
-            'internal_reference' => 'nullable|string',
             'reviewed_by' => 'nullable|integer',
             'review_date' => 'nullable|string'
         ]);
@@ -101,14 +95,12 @@ class ObligationController extends Controller
             $obligation = Obligation::findORfail($obligation_id);
             $obligation->update([
                 'obligation_description' => $request->obligation_description,
-                'server_name' => $request->server_name,
                 'quantity' => $request->quantity,
                 'period' => $request->period,
                 'alert_time' => $request->alert_time,
                 'last_payment' => $request->last_payment,
                 'expiration_date' => $request->expiration_date,
                 'observations' => $request->observations,
-                'internal_reference' => $request->internal_reference,
                 'reviewed_by' => $request->reviewed_by,
                 'review_date' => $request->review_date,
             ]);
