@@ -23,12 +23,11 @@ class ObligationController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'obligation_description' => 'required|string',
-            'category_id' => 'required|integer',
             'server_name' => 'nullable|string',
             'quantity' => 'required|integer',
             'period' => 'required|string',
             'alert_time' => 'required|integer',
-            'created_by' => 'required|integer',
+            'created_by' => 'nullable|integer',
             'last_payment' => 'nullable|numeric',
             'expiration_date' => 'nullable|string',
             'observations' => 'required|string',
@@ -47,7 +46,6 @@ class ObligationController extends Controller
             $obligation = new Obligation();
             $obligation->obligation_id = $request->obligation_id;
             $obligation->obligation_description = $request->obligation_description;
-            $obligation->category_id = $request->category_id;
             $obligation->server_name = $request->server_name;
             $obligation->quantity = $request->quantity;
             $obligation->period = $request->period;
@@ -59,7 +57,7 @@ class ObligationController extends Controller
             $obligation->internal_reference = $request->internal_reference;
             $obligation->reviewed_by = $request->reviewed_by;
             $obligation->review_date = $request->review_date;
-            $obligation->status = 2;
+            $obligation->status = 10;
 
             $obligation->save();
 
@@ -83,7 +81,6 @@ class ObligationController extends Controller
 
         $validator = Validator::make($request->all(), [
             'obligation_description' => 'required|string',
-            'category_id' => 'required|integer',
             'server_name' => 'nullable|string',
             'quantity' => 'required|integer',
             'period' => 'required|string',
@@ -104,7 +101,6 @@ class ObligationController extends Controller
             $obligation = Obligation::findORfail($obligation_id);
             $obligation->update([
                 'obligation_description' => $request->obligation_description,
-                'category_id' => $request->category_id,
                 'server_name' => $request->server_name,
                 'quantity' => $request->quantity,
                 'period' => $request->period,
@@ -127,7 +123,7 @@ class ObligationController extends Controller
     {
         $obligation = Obligation::findORfail($obligation_id);
         $obligation->update([
-            'status' => 1
+            'status' => 9
         ]);
         return response()->json(['message' => 'Obligation eliminado correctamente.']);
     }
