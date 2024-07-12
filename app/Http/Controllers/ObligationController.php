@@ -128,7 +128,7 @@ class ObligationController extends Controller
             'date_ini' => 'required|date',
             'date_end' => 'nullable|date',
             'paid' => 'required|integer',
-            'observations' => 'required|string'
+            'observations' => 'nullable|string'
         ]);
 
         if ($validator->fails()) {

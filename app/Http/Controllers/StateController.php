@@ -33,7 +33,6 @@ class StateController extends Controller
         $status = [
             'Inactiva',
             'Activa',
-            'Auditada',
             'Pendiente',
             'Vencida'
         ];
