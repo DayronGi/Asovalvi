@@ -160,7 +160,7 @@ class ObligationController extends Controller
 
     public function list_payments($obligation_id)
     {
-        $payments = Payment::where('obligation_id', $obligation_id)->get();
+        $payments = Payment::with('created_by')->where('obligation_id', $obligation_id)->get();
         return response()->json(['payments' => $payments]);
     }
 }
