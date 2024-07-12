@@ -123,7 +123,8 @@ class ObligationController extends Controller
     public function store_payment(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            
+
+            'obligation_id' => 'required|integer',
             'date_ini' => 'required|date',
             'date_end' => 'nullable|date',
             'paid' => 'required|integer',
@@ -138,8 +139,8 @@ class ObligationController extends Controller
             $user = Auth::user();
 
             $payment = new Payment();
-            
-            $payment->obligation_id = 2;
+
+            $payment->obligation_id = $request->obligation_id;
             $payment->date_ini = $request->date_ini;
             $payment->date_end = $request->date_end;
             $payment->paid = $request->paid;
@@ -159,7 +160,7 @@ class ObligationController extends Controller
 
     public function list_payments($obligation_id)
     {
-        $payment = Payment::findORfail($obligation_id);
-        return response()->json($payment);
+        $payments = Payment::where('obligation_id', $obligation_id)->get();
+        return response()->json(['payments' => $payments]);
     }
 }
