@@ -123,11 +123,11 @@ class ObligationController extends Controller
     public function store_payment(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            
             'date_ini' => 'required|date',
             'date_end' => 'nullable|date',
-            'paid' => 'required|float',
-            'observations' => 'required|string',
-            'created_by' => 'required|integer'
+            'paid' => 'required|integer',
+            'observations' => 'required|string'
         ]);
 
         if ($validator->fails()) {
@@ -135,12 +135,16 @@ class ObligationController extends Controller
         }
 
         try {
+            $user = Auth::user();
+
             $payment = new Payment();
+            
+            $payment->obligation_id = 2;
             $payment->date_ini = $request->date_ini;
             $payment->date_end = $request->date_end;
             $payment->paid = $request->paid;
             $payment->observations = $request->observations;
-            $payment->created_by = $request->created_by;
+            $payment->created_by = $user->id;
             $payment->creation_date = \Carbon\Carbon::now();
             $payment->status = 2;
 

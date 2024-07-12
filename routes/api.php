@@ -40,7 +40,7 @@ Route::controller(ObligationController::class)->middleware('auth:sanctum')->grou
     Route::put('/obligations/{obligation_id}/update', 'update');
     Route::put('/obligations/{obligation_id}/delete', 'delete');
     Route::get('/payments/{obligation_id}', 'list_payments');
-    Route::post('/payments', 'store_payments');
+    Route::post('/payments', 'store_payment');
 });
 
 Route::controller(StateController::class)->middleware('auth:sanctum')->group(function() {
