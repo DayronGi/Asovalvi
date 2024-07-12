@@ -39,7 +39,7 @@ Route::controller(ObligationController::class)->middleware('auth:sanctum')->grou
     Route::get('/obligations/{obligation_id}', 'view');
     Route::put('/obligations/{obligation_id}/update', 'update');
     Route::put('/obligations/{obligation_id}/delete', 'delete');
-    Route::get('/payments', 'list_payments');
+    Route::get('/payments/{obligation_id}', 'list_payments');
     Route::post('/payments', 'store_payments');
 });
 

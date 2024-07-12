@@ -127,8 +127,7 @@ class ObligationController extends Controller
             'date_end' => 'nullable|date',
             'paid' => 'required|float',
             'observations' => 'required|string',
-            'created_by' => 'required|integer',
-            'creation_date' => 'required|date'
+            'created_by' => 'required|integer'
         ]);
 
         if ($validator->fails()) {
@@ -142,7 +141,7 @@ class ObligationController extends Controller
             $payment->paid = $request->paid;
             $payment->observations = $request->observations;
             $payment->created_by = $request->created_by;
-            $payment->creation_date = $request->creation_date;
+            $payment->creation_date = \Carbon\Carbon::now();
             $payment->status = 2;
 
             $payment->save();
@@ -154,9 +153,9 @@ class ObligationController extends Controller
         }
     }
 
-    public function list_payments()
+    public function list_payments($obligation_id)
     {
-        $payment = Payment::all();
+        $payment = Payment::findORfail($obligation_id);
         return response()->json($payment);
     }
 }
