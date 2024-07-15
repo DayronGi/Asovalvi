@@ -12,4 +12,19 @@ class UserController extends Controller
         $users = User::all();
         return response()->json($users);
     }
+
+    public function view($id)
+    {
+        $user = User::findORfail($id);
+        return response()->json($user);
+    }
+
+    public function delete($id)
+    {
+        $user = User::findORfail($id);
+        $user->update([
+            'status' => 1
+        ]);
+        return response()->json(['message' => 'User eliminado correctamente.']);
+    }
 }

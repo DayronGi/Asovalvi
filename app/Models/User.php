@@ -13,8 +13,12 @@ class User extends Authenticatable
     public $timestamps = false;
 
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'document_number',
+        'user_type',
         'password',
+        'status',
     ];
 
     protected $hidden = [
