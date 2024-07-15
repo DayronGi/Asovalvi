@@ -68,6 +68,7 @@ Route::controller(AssistantController::class)->middleware('auth:sanctum')->group
 Route::controller(UserController::class)->middleware('auth:sanctum')->group(function() {
     Route::get('/users', 'list');
     Route::get('/users/{id}', 'view');
+    Route::put('/users/{id}/update', 'update');
     Route::put('/users/{id}/delete', 'delete');
 });
 
