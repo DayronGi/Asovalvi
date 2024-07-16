@@ -66,10 +66,8 @@ class UserController extends Controller
     {
         $user = Auth::user();
         if (!$user) {
-            \Log::info('No authenticated user found');
             return response()->json(['message' => 'No authenticated user found'], Response::HTTP_UNAUTHORIZED);
         }
-        \Log::info('Authenticated user: ' . $user->email);
         return response()->json(['user_type' => $user->user_type], Response::HTTP_OK);
     }
 }
