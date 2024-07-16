@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -58,5 +60,16 @@ class UserController extends Controller
             'status' => 1
         ]);
         return response()->json(['message' => 'User eliminado correctamente.']);
+    }
+
+    public function getUserType()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            \Log::info('No authenticated user found');
+            return response()->json(['message' => 'No authenticated user found'], Response::HTTP_UNAUTHORIZED);
+        }
+        \Log::info('Authenticated user: ' . $user->email);
+        return response()->json(['user_type' => $user->user_type], Response::HTTP_OK);
     }
 }

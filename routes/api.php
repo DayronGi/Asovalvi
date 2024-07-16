@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Route;
 Route::controller(AuthController::class)->group(function() {
     Route::post('/register', 'register');
     Route::post('/login', 'login');
-    Route::get('/user_type', 'getUserType');
     Route::post('/logout', 'logout');
 });
 
@@ -71,5 +70,6 @@ Route::controller(UserController::class)->middleware('auth:sanctum')->group(func
     Route::get('/users/{id}', 'view');
     Route::put('/users/{id}/update', 'update');
     Route::put('/users/{id}/delete', 'delete');
+    Route::get('/user_type', 'getUserType');
 });
 
