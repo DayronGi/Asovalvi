@@ -39,7 +39,7 @@ class AssistantController extends Controller
         }
     }
 
-    public function store_assistants(Request $request)
+    public function storeAssistants(Request $request)
 {
     $validator = Validator::make($request->all(), [
         'user_ids' => 'required|array',

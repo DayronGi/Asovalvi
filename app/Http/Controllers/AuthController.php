@@ -49,6 +49,12 @@ class AuthController extends Controller
         }
     }
 
+    public function getUserType()
+    {
+        $user = Auth::user();
+        return response()->json([$user], Response::HTTP_OK);
+    }
+
     public function logout()
     {
         $cookie = Cookie::forget('cookie_token');

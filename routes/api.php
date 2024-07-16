@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 Route::controller(AuthController::class)->group(function() {
     Route::post('/register', 'register');
     Route::post('/login', 'login');
+    Route::get('/user_type', 'getUserType');
     Route::post('/logout', 'logout');
 });
 
@@ -39,8 +40,8 @@ Route::controller(ObligationController::class)->middleware('auth:sanctum')->grou
     Route::get('/obligations/{obligation_id}', 'view');
     Route::put('/obligations/{obligation_id}/update', 'update');
     Route::put('/obligations/{obligation_id}/delete', 'delete');
-    Route::get('/payments/{obligation_id}', 'list_payments');
-    Route::post('/payments', 'store_payment');
+    Route::get('/payments/{obligation_id}', 'listPayments');
+    Route::post('/payments', 'storePayment');
 });
 
 Route::controller(StateController::class)->middleware('auth:sanctum')->group(function() {
@@ -60,7 +61,7 @@ Route::controller(TopicController::class)->middleware('auth:sanctum')->group(fun
 Route::controller(AssistantController::class)->middleware('auth:sanctum')->group(function() {
     Route::get('/assistants', 'list');
     Route::post('/assistants', 'store');
-    Route::post('/assistant_meetings', 'store_assistants');
+    Route::post('/assistant_meetings', 'storeAssistants');
     Route::get('/assistants/{meeting_id}', 'view');
     Route::delete('/assistants/{meeting_id}/delete/{user_id}', 'delete');
 });

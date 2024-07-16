@@ -120,7 +120,7 @@ class ObligationController extends Controller
         return response()->json(['message' => 'Obligation eliminado correctamente.']);
     }
 
-    public function store_payment(Request $request)
+    public function storePayment(Request $request)
     {
         $validator = Validator::make($request->all(), [
 
@@ -158,9 +158,20 @@ class ObligationController extends Controller
         }
     }
 
-    public function list_payments($obligation_id)
+    public function listPayments($obligation_id)
     {
         $payments = Payment::with('created_by')->where('obligation_id', $obligation_id)->get();
         return response()->json(['payments' => $payments]);
+    }
+
+    public function updatePayment($obligation_id)
+    {
+        $payment = Payment::findORfail($obligation_id);
+        $obligation = Obligation::findORfail($obligation_id);
+        $obligation->update([
+            'last_payment' => $payment->paid,
+            'expiration_date' => $payment->date_end,
+        ]);
+        return response()->json(['message' => 'Obligation actualizado correctamente.']);
     }
 }
