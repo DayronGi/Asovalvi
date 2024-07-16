@@ -38,7 +38,7 @@ class UserController extends Controller
         try {
             $user = USer::findORfail($id);
             $user->update([
-                'first_name' => $request->fisrt_name,
+                'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'document_number' => $request->document_number,
                 'user_type' => $request->user_type,
