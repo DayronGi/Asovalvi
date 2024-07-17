@@ -20,8 +20,7 @@ class MeetingAssistant extends Model
         'status'
     ];
 
-    public function user_id(): BelongsTo
-    {
+    public function user_id(): BelongsTo {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

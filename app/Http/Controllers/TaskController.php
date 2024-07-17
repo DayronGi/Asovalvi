@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
-    public function list(Request $request)
-    {
+    public function list(Request $request) {
         $perPage = $request->input('per_page', 15);
 
         $tasks = Task::with('meeting', 'created_by', 'status', 'assigned_to', 'reviewed_by')->orderBy('status', 'asc')->paginate($perPage);
@@ -18,8 +17,7 @@ class TaskController extends Controller
         return response()->json($tasks);
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $validator = Validator::make($request->all(), [
             'meeting_id' => 'nullable|integer',
             'start_date' => 'required|date',
@@ -61,20 +59,16 @@ class TaskController extends Controller
 
             return response()->json(['message' => 'Task creado correctamente.', 'task' => $task], 201);
         } catch (\Exception $e) {
-            \Log::error($e->getMessage());
             return response()->json(['error' => 'Error al intentar guardar task.', 'exception' => $e->getMessage()], 500);
         }
     }
 
-    public function view($task_id)
-    {
+    public function view($task_id) {
         $task = Task::with('meeting', 'created_by', 'status', 'assigned_to', 'reviewed_by')->findOrFail($task_id);
         return response()->json(['task' => $task]);
     }
 
-    public function update(Request $request, $task_id)
-    {
-
+    public function update(Request $request, $task_id) {
         $validator = Validator::make($request->all(), [
             'start_date' => 'nullable|string',
             'estimated_time' => 'nullable|integer',
@@ -105,13 +99,11 @@ class TaskController extends Controller
             ]);
             return response()->json(['message' => 'Task actualizado correctamente.']);
         } catch (\Exception $e) {
-            \Log::error($e->getMessage());
             return response()->json(['error' => 'Error al intentar actualizar task.', 'exception' => $e->getMessage()], 500);
         }
     }
 
-    public function reject($obligation_id)
-    {
+    public function reject($obligation_id) {
         $obligation = Task::findORfail($obligation_id);
         $obligation->update([
             'status' => 8
@@ -119,8 +111,7 @@ class TaskController extends Controller
         return response()->json(['message' => 'Task rechazado correctamente.']);
     }
 
-    public function complete($obligation_id)
-    {
+    public function complete($obligation_id) {
         $obligation = Task::findORfail($obligation_id);
         $obligation->update([
             'status' => 7

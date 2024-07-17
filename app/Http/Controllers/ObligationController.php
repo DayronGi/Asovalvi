@@ -10,8 +10,9 @@ use Illuminate\Support\Facades\Validator;
 
 class ObligationController extends Controller
 {
-    public function list(Request $request)
-    {
+    public function list(Request $request) {
+        $this->updatePayments();
+
         $perPage = $request->input('per_page', 15);
 
         $obligations = Obligation::with('reviewed_by', 'created_by', 'status')->orderBy('status', 'asc')->paginate($perPage);
@@ -19,8 +20,7 @@ class ObligationController extends Controller
         return response()->json($obligations);
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $validator = Validator::make($request->all(), [
             'obligation_description' => 'required|string',
             'quantity' => 'required|integer',
@@ -61,20 +61,16 @@ class ObligationController extends Controller
 
             return response()->json(['message' => 'Obligation creado correctamente.', 'obligation' => $obligation], 201);
         } catch (\Exception $e) {
-            \Log::error($e->getMessage());
             return response()->json(['error' => 'Error al intentar guardar obligation.', 'exception' => $e->getMessage()], 500);
         }
     }
 
-    public function view($obligation_id)
-    {
+    public function view($obligation_id) {
         $obligation = Obligation::with('reviewed_by', 'created_by', 'status')->findORfail($obligation_id);
         return response()->json(['obligation' => $obligation]);
     }
 
-    public function update(Request $request, $obligation_id)
-    {
-
+    public function update(Request $request, $obligation_id) {
         $validator = Validator::make($request->all(), [
             'obligation_description' => 'required|string',
             'quantity' => 'required|integer',
@@ -105,14 +101,14 @@ class ObligationController extends Controller
                 'review_date' => $request->review_date,
             ]);
             return response()->json(['message' => 'Obligation actualizado correctamente.']);
-        } catch (\Exception $e) {
-            \Log::error($e->getMessage());
+        }
+
+        catch (\Exception $e) {
             return response()->json(['error' => 'Error al intentar actualizar obligation.', 'exception' => $e->getMessage()], 500);
         }
     }
 
-    public function delete($obligation_id)
-    {
+    public function delete($obligation_id) {
         $obligation = Obligation::findORfail($obligation_id);
         $obligation->update([
             'status' => 9
@@ -120,10 +116,8 @@ class ObligationController extends Controller
         return response()->json(['message' => 'Obligation eliminado correctamente.']);
     }
 
-    public function storePayment(Request $request)
-    {
+    public function storePayment(Request $request) {
         $validator = Validator::make($request->all(), [
-
             'obligation_id' => 'required|integer',
             'date_ini' => 'required|date',
             'date_end' => 'nullable|date',
@@ -153,25 +147,36 @@ class ObligationController extends Controller
 
             return response()->json(['message' => 'Payment creado correctamente.', 'payment' => $payment], 201);
         } catch (\Exception $e) {
-            \Log::error($e->getMessage());
             return response()->json(['error' => 'Error al intentar guardar payment.', 'exception' => $e->getMessage()], 500);
         }
     }
 
-    public function listPayments($obligation_id)
-    {
+    public function listPayments($obligation_id) {
         $payments = Payment::with('created_by')->where('obligation_id', $obligation_id)->get();
         return response()->json(['payments' => $payments]);
     }
 
-    public function updatePayment($obligation_id)
-    {
-        $payment = Payment::findORfail($obligation_id);
-        $obligation = Obligation::findORfail($obligation_id);
-        $obligation->update([
-            'last_payment' => $payment->paid,
-            'expiration_date' => $payment->date_end,
-        ]);
-        return response()->json(['message' => 'Obligation actualizado correctamente.']);
+    public function updatePayments() {
+        $payments = Payment::all();
+
+        if ($payments->isEmpty()) {
+            return response()->json(['message' => 'No se encontraron pagos.'], 404);
+        }
+
+        foreach ($payments as $payment) {
+            $obligations = Obligation::where('obligation_id', $payment->obligation_id)->get();
+
+            if ($obligations->isEmpty()) {
+                continue;
+            }
+
+            foreach ($obligations as $obligation) {
+                $obligation->update([
+                    'last_payment' => $payment->paid,
+                    'expiration_date' => $payment->date_end,
+                ]);
+            }
+        }
+        return response()->json(['message' => 'Obligations actualizados correctamente.']);
     }
 }

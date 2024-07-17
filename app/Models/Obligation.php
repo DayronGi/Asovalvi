@@ -34,18 +34,15 @@ class Obligation extends Model
         'status'
     ];
 
-    public function reviewed_by(): BelongsTo
-    {
+    public function reviewed_by(): BelongsTo {
         return $this->belongsTo(User::class, 'reviewed_by', 'id');
     }
 
-    public function created_by(): BelongsTo
-    {
+    public function created_by(): BelongsTo {
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
-    public function status(): BelongsTo
-    {
+    public function status(): BelongsTo {
         return $this->belongsTo(State::class, 'status', 'status');
     }
 }

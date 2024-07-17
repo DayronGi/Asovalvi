@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class MeetingController extends Controller
 {
-    public function list(Request $request)
-    {
+    public function list(Request $request) {
         $perPage = $request->input('per_page', 15);
 
         $meetings = Meeting::with('called_by', 'created_by', 'topics', 'status')->orderBy('status', 'asc')->paginate($perPage);
@@ -18,8 +17,7 @@ class MeetingController extends Controller
         return response()->json($meetings);
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $validator = Validator::make($request->all(), [
             'meeting_date' => 'required|string',
             'start_hour' => 'nullable|string',
@@ -55,21 +53,16 @@ class MeetingController extends Controller
 
             return response()->json(['message' => 'meeting creado correctamente.', 'meeting' => $meeting], 201);
         } catch (\Exception $e) {
-
-            \Log::error($e->getMessage());
             return response()->json(['error' => 'Error al intentar guardar meeting.', 'exception' => $e->getMessage()], 500);
         }
     }
 
-    public function view($meeting_id)
-    {
+    public function view($meeting_id) {
         $meeting = Meeting::with('called_by', 'created_by', 'topics', 'status')->findORfail($meeting_id);
         return response()->json(['meeting' => $meeting]);
     }
 
-    public function update(Request $request, $meeting_id)
-    {
-
+    public function update(Request $request, $meeting_id) {
         $validator = Validator::make($request->all(), [
             'meeting_date' => 'required|string',
             'start_hour' => 'nullable|string',
@@ -97,13 +90,11 @@ class MeetingController extends Controller
             ]);
             return response()->json(['message' => 'Meeting actualizado correctamente.']);
         } catch (\Exception $e) {
-            \Log::error($e->getMessage());
             return response()->json(['error' => 'Error al intentar actualizar meeting.', 'exception' => $e->getMessage()], 500);
         }
     }
 
-    public function complete($meeting_id)
-    {
+    public function complete($meeting_id) {
         $meeting = Meeting::findORfail($meeting_id);
         $meeting->update([
             'status' => 4

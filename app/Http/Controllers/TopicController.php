@@ -9,14 +9,12 @@ use Illuminate\Support\Facades\Validator;
 class TopicController extends Controller
 {
 
-    public function list()
-    {
+    public function list() {
         $topics = MeetingTopic::all();
         return response()->json($topics);
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $validator = Validator::make($request->all(), [
             'meeting_id' => 'required|integer',
             'type' => 'required|string',
@@ -42,20 +40,16 @@ class TopicController extends Controller
 
             return response()->json(['message' => 'topic creado correctamente.', 'topic' => $topic], 201);
         } catch (\Exception $e) {
-
-            \Log::error($e->getMessage());
             return response()->json(['error' => 'Error al intentar guardar topic.', 'exception' => $e->getMessage()], 500);
         }
     }
 
-    public function view($meeting_id)
-    {
+    public function view($meeting_id) {
         $topics = MeetingTopic::where('meeting_id', $meeting_id)->get()->toArray();
         return response()->json(['topics' => $topics]);
     }
 
-    public function delete($topic_id)
-    {
+    public function delete($topic_id) {
         $topic = MeetingTopic::findORfail($topic_id);
         $topic->update([
             'status' => 1

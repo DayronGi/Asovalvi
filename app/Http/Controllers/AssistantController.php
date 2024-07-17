@@ -8,14 +8,12 @@ use Illuminate\Support\Facades\Validator;
 
 class AssistantController extends Controller
 {
-    public function list()
-    {
+    public function list() {
         $assistants = MeetingAssistant::with(['user_id:id,first_name,last_name'])->get();
         return response()->json([ 'assistants' => $assistants]);
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|integer'
         ]);
@@ -33,14 +31,11 @@ class AssistantController extends Controller
 
             return response()->json(['message' => 'Assistant creado correctamente.', 'assistant' => $assistant], 201);
         } catch (\Exception $e) {
-
-            \Log::error($e->getMessage());
             return response()->json(['error' => 'Error al intentar guardar assistant.', 'exception' => $e->getMessage()], 500);
         }
     }
 
-    public function storeAssistants(Request $request)
-{
+    public function storeAssistants(Request $request) {
     $validator = Validator::make($request->all(), [
         'user_ids' => 'required|array',
         'user_ids.*' => 'required|integer|exists:users,id',
@@ -66,21 +61,20 @@ class AssistantController extends Controller
         }
 
         return response()->json(['message' => 'Assistants creados correctamente.', 'assistants' => $assistants], 201);
-    } catch (\Exception $e) {
-        \Log::error($e->getMessage());
+    }
+
+    catch (\Exception $e) {
         return response()->json(['error' => 'Error al intentar guardar assistants.', 'exception' => $e->getMessage()], 500);
     }
 }
 
 
-    public function view($meeting_id)
-    {
+    public function view($meeting_id) {
         $assistants = MeetingAssistant::with(['user_id:id,first_name,last_name'])->where('meeting_id', $meeting_id)->get()->toArray();
         return response()->json(['assistants' => $assistants]);
     }
 
-    public function delete($meeting_id, $user_id)
-    {
+    public function delete($meeting_id, $user_id) {
         $updated = MeetingAssistant::where('meeting_id', $meeting_id)
             ->where('user_id', $user_id)
             ->delete();

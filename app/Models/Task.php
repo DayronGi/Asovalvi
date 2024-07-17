@@ -31,28 +31,23 @@ class Task extends Model
         'status'
     ];
 
-    public function meeting(): BelongsTo
-    {
+    public function meeting(): BelongsTo {
         return $this->belongsTo(Meeting::class, 'meeting_id', 'meeting_id');
     }
 
-    public function created_by(): BelongsTo
-    {
+    public function created_by(): BelongsTo {
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
-    public function status(): BelongsTo
-    {
+    public function status(): BelongsTo {
         return $this->belongsTo(State::class, 'status', 'status');
     }
 
-    public function assigned_to(): BelongsTo
-    {
+    public function assigned_to(): BelongsTo {
         return $this->belongsTo(User::class, 'assigned_to', 'id');
     }
 
-    public function reviewed_by(): BelongsTo
-    {
+    public function reviewed_by(): BelongsTo {
         return $this->belongsTo(User::class, 'reviewed_by', 'id');
     }
 }

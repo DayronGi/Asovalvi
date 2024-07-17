@@ -16,8 +16,7 @@ class Payment extends Model
 
     public $timestamps = false;
 
-    public function created_by(): BelongsTo
-    {
+    public function created_by(): BelongsTo {
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
 }

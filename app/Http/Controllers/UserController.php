@@ -10,21 +10,17 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function list()
-    {
+    public function list() {
         $users = User::all();
         return response()->json($users);
     }
 
-    public function view($id)
-    {
+    public function view($id) {
         $user = User::findORfail($id);
         return response()->json($user);
     }
 
-    public function update(Request $request, $id)
-    {
-
+    public function update(Request $request, $id) {
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
@@ -48,13 +44,11 @@ class UserController extends Controller
             ]);
             return response()->json(['message' => 'User actualizado correctamente.']);
         } catch (\Exception $e) {
-            \Log::error($e->getMessage());
             return response()->json(['error' => 'Error al intentar actualizar user.', 'exception' => $e->getMessage()], 500);
         }
     }
 
-    public function delete($id)
-    {
+    public function delete($id) {
         $user = User::findORfail($id);
         $user->update([
             'status' => 1
@@ -62,8 +56,7 @@ class UserController extends Controller
         return response()->json(['message' => 'User eliminado correctamente.']);
     }
 
-    public function getUserType()
-    {
+    public function getUserType() {
         $user = Auth::user();
         if (!$user) {
             return response()->json(['message' => 'No authenticated user found'], Response::HTTP_UNAUTHORIZED);

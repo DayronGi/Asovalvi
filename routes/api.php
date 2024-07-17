@@ -72,4 +72,3 @@ Route::controller(UserController::class)->middleware('auth:sanctum')->group(func
     Route::put('/users/{id}/delete', 'delete');
     Route::get('/user_type', 'getUserType');
 });
-
