@@ -53,7 +53,7 @@ class ObligationController extends Controller
             $obligation->observations = $request->observations;
             $obligation->reviewed_by = $request->reviewed_by;
             $obligation->review_date = $request->review_date;
-            $obligation->status = 10;
+            $obligation->status = 12;
 
             $obligation->save();
 
@@ -157,6 +157,7 @@ class ObligationController extends Controller
     }
 
     public function updatePayments() {
+
         $payments = Payment::all();
 
         if ($payments->isEmpty()) {
