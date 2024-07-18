@@ -163,6 +163,8 @@ class ObligationController extends Controller
             return response()->json(['message' => 'No se encontraron pagos.'], 404);
         }
 
+        $today = now();
+
         foreach ($payments as $payment) {
             $obligations = Obligation::where('obligation_id', $payment->obligation_id)->get();
 
@@ -175,6 +177,16 @@ class ObligationController extends Controller
                     'last_payment' => $payment->paid,
                     'expiration_date' => $payment->date_end,
                 ]);
+
+                $alertDate = \Carbon\Carbon::parse($obligation->expiration_date)->subDays($obligation->alert_time);
+
+                if ($alertDate->isSameDay($today)) {
+                    $obligation->update(['status' => 12]);
+                }
+
+                if (\Carbon\Carbon::parse($obligation->expiration_date)->greaterThanOrEqualTo($today)) {
+                    $obligation->update(['status' => 13]);
+                }
             }
         }
         return response()->json(['message' => 'Obligations actualizados correctamente.']);
