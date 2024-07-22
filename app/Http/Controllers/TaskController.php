@@ -120,7 +120,7 @@ class TaskController extends Controller
     }
 
     public function meeting_task($meeting_id) {
-        $task = Task::with('meeting', 'created_by', 'status', 'assigned_to', 'reviewed_by')->findOrFail($meeting_id);
-        return response()->json(['task' => $task]);
+        $tasks = Task::with('meeting', 'created_by', 'status', 'assigned_to', 'reviewed_by')->where('meeting_id', $meeting_id)->get();
+        return response()->json(['tasks' => $tasks]);
     }
 }
