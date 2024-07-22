@@ -222,5 +222,14 @@ class ObligationController extends Controller
                 AND obligations.expiration_date < CURDATE()
             "
         );
+
+        DB::update(
+            "
+                UPDATE obligations
+                SET status = 12
+                WHERE last_payment IS NULL
+                AND expiration_date IS NULL
+            "
+        );
     }
 }
