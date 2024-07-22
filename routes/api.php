@@ -23,6 +23,7 @@ Route::controller(TaskController::class)->middleware('auth:sanctum')->group(func
     Route::put('/tasks/{task_id}/update', 'update');
     Route::put('/tasks/{task_id}/reject', 'reject');
     Route::put('/tasks/{task_id}/complete', 'complete');
+    Route::get('/tasks/{task_id}/meeting', 'meeting_task');
 });
 
 Route::controller(MeetingController::class)->middleware('auth:sanctum')->group(function() {

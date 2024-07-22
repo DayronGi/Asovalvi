@@ -33,6 +33,14 @@ class Meeting extends Model
         return $this->belongsTo(User::class, 'called_by', 'id');
     }
 
+    public function director(): BelongsTo {
+        return $this->belongsTo(User::class, 'director', 'id');
+    }
+
+    public function secretary(): BelongsTo {
+        return $this->belongsTo(User::class, 'secretary', 'id');
+    }
+
     public function created_by(): BelongsTo {
         return $this->belongsTo(User::class, 'created_by', 'id');
     }

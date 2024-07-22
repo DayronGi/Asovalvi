@@ -118,4 +118,9 @@ class TaskController extends Controller
         ]);
         return response()->json(['message' => 'Task realizado correctamente.']);
     }
+
+    public function meeting_task($meeting_id) {
+        $task = Task::with('meeting', 'created_by', 'status', 'assigned_to', 'reviewed_by')->findOrFail($meeting_id);
+        return response()->json(['task' => $task]);
+    }
 }

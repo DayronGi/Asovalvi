@@ -12,7 +12,7 @@ class MeetingController extends Controller
     public function list(Request $request) {
         $perPage = $request->input('per_page', 15);
 
-        $meetings = Meeting::with('called_by', 'created_by', 'topics', 'status')->orderBy('status', 'asc')->paginate($perPage);
+        $meetings = Meeting::with('called_by', 'director', 'secretary', 'created_by', 'topics', 'status')->orderBy('status', 'asc')->paginate($perPage);
 
         return response()->json($meetings);
     }
@@ -22,6 +22,8 @@ class MeetingController extends Controller
             'meeting_date' => 'required|string',
             'start_hour' => 'nullable|string',
             'called_by' => 'required|integer',
+            'director' => 'required|integer',
+            'secretary' => 'required|integer',
             'placement' => 'nullable|string',
             'meeting_description' => 'required|string',
             'empty_field' => 'nullable|string',
@@ -39,6 +41,8 @@ class MeetingController extends Controller
             $meeting->meeting_date = $request->meeting_date;
             $meeting->start_hour = $request->start_hour;
             $meeting->called_by = $request->called_by;
+            $meeting->director = $request->director;
+            $meeting->secretary = $request->secretary;
             $meeting->placement = $request->placement;
             $meeting->meeting_description = $request->meeting_description;
             $meeting->empty_field = $request->empty_field;
@@ -49,7 +53,7 @@ class MeetingController extends Controller
 
             $meeting->save();
 
-            $meeting->load('called_by', 'created_by', 'topics', 'status');
+            $meeting->load('called_by', 'director', 'secretary', 'created_by', 'topics', 'status');
 
             return response()->json(['message' => 'meeting creado correctamente.', 'meeting' => $meeting], 201);
         } catch (\Exception $e) {
@@ -58,7 +62,7 @@ class MeetingController extends Controller
     }
 
     public function view($meeting_id) {
-        $meeting = Meeting::with('called_by', 'created_by', 'topics', 'status')->findORfail($meeting_id);
+        $meeting = Meeting::with('called_by', 'director', 'secretary', 'created_by', 'topics', 'status')->findORfail($meeting_id);
         return response()->json(['meeting' => $meeting]);
     }
 
