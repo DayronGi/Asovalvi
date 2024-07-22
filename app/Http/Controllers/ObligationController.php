@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Obligation;
 use App\Models\Payment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ObligationController extends Controller
 {
     public function list(Request $request) {
         $this->updatePayments();
+        $this->updateStatus();
 
         $perPage = $request->input('per_page', 15);
 
@@ -140,7 +143,7 @@ class ObligationController extends Controller
             $payment->paid = $request->paid;
             $payment->observations = $request->observations;
             $payment->created_by = $user->id;
-            $payment->creation_date = \Carbon\Carbon::now();
+            $payment->creation_date = Carbon::now();
             $payment->status = 2;
 
             $payment->save();
@@ -157,14 +160,11 @@ class ObligationController extends Controller
     }
 
     public function updatePayments() {
-
         $payments = Payment::all();
 
         if ($payments->isEmpty()) {
             return response()->json(['message' => 'No se encontraron pagos.'], 404);
         }
-
-        $today = now();
 
         foreach ($payments as $payment) {
             $obligations = Obligation::where('obligation_id', $payment->obligation_id)->get();
@@ -178,18 +178,49 @@ class ObligationController extends Controller
                     'last_payment' => $payment->paid,
                     'expiration_date' => $payment->date_end,
                 ]);
-
-                $alertDate = \Carbon\Carbon::parse($obligation->expiration_date)->subDays($obligation->alert_time);
-
-                if ($alertDate->isSameDay($today)) {
-                    $obligation->update(['status' => 12]);
-                }
-
-                if (\Carbon\Carbon::parse($obligation->expiration_date)->greaterThanOrEqualTo($today)) {
-                    $obligation->update(['status' => 13]);
-                }
             }
         }
-        return response()->json(['message' => 'Obligations actualizados correctamente.']);
+    }
+
+    public function updateStatus() {
+        $where = "1";
+        DB::update(
+            "
+                UPDATE obligations
+                SET status = 10
+                WHERE $where
+                AND obligations.status > 9
+                AND obligations.status != 10
+                AND CURDATE() < DATE_SUB(obligations.expiration_date, INTERVAL obligations.alert_time DAY)
+            "
+        );
+
+        DB::update(
+            "
+                UPDATE obligations
+                SET status = 12,
+                    reviewed_by = NULL,
+                    review_date = NULL
+                WHERE $where
+                AND obligations.status > 9
+                AND obligations.status != 12
+                AND obligations.period != 'UNDEFINED'
+                AND CURDATE() > DATE_SUB(obligations.expiration_date, INTERVAL obligations.alert_time DAY)
+            "
+        );
+
+        DB::update(
+            "
+                UPDATE obligations
+                SET status = 13,
+                    reviewed_by = NULL,
+                    review_date = NULL
+                WHERE $where
+                AND obligations.status > 9
+                AND obligations.status != 13
+                AND obligations.period != 'UNDEFINED'
+                AND obligations.expiration_date < CURDATE()
+            "
+        );
     }
 }
