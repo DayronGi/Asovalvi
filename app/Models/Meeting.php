@@ -20,6 +20,8 @@ class Meeting extends Model
         'meeting_date',
         'start_hour',
         'called_by',
+        'director',
+        'secretary',
         'placement',
         'meeting_description',
         'empty_field',
