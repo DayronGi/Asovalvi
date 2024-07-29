@@ -18,7 +18,13 @@ class ObligationController extends Controller
 
         $perPage = $request->input('per_page', 15);
 
-        $obligations = Obligation::with('reviewed_by', 'created_by', 'status')->orderBy('status', 'asc')->paginate($perPage);
+        $obligations = Obligation::with('reviewed_by', 'created_by', 'status')
+            ->orderBy('status', 'asc')
+            ->paginate($perPage);
+
+        foreach ($obligations as $obligation) {
+            $obligation->total_paid = Payment::where('obligation_id', $obligation->obligation_id)->sum('paid');
+        }
 
         return response()->json($obligations);
     }
