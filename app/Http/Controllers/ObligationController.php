@@ -16,12 +16,11 @@ class ObligationController extends Controller
         $this->updatePayments();
         $this->updateStatus();
 
-        $obligations = Obligation::with('reviewed_by', 'created_by', 'status')->orderBy('status', 'asc')->get();
+        $obligations = Obligation::with('reviewed_by', 'created_by', 'status')->orderBy('status', 'desc')->get();
 
         foreach ($obligations as $obligation) {
             $obligation->total_paid = Payment::where('obligation_id', $obligation->obligation_id)->sum('paid');
         }
-
         return response()->json($obligations);
     }
 
