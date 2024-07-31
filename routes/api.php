@@ -48,6 +48,7 @@ Route::controller(StateController::class)->middleware('auth:sanctum')->group(fun
     Route::get('/status/tasks', 'tasks');
     Route::get('/status/meetings', 'meetings');
     Route::get('/status/obligations', 'obligations');
+    Route::get('/status/users', 'users');
 });
 
 Route::controller(TopicController::class)->middleware('auth:sanctum')->group(function() {
