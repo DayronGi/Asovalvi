@@ -43,8 +43,8 @@ class StateController extends Controller
     public function users()
     {
         $status = [
-            'Inactiva',
-            'Activa'
+            'Inactivo',
+            'Activo'
         ];
 
         return response()->json(['status' => $status]);

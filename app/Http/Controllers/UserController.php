@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     public function list() {
-        $users = User::all();
+        $users = User::with('status')->get();
         return response()->json($users);
     }
 
@@ -34,7 +34,7 @@ class UserController extends Controller
         }
 
         try {
-            $user = USer::findORfail($id);
+            $user = User::findORfail($id);
             $user->update([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
