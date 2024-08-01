@@ -6,7 +6,7 @@ COPY --from=composer:2.1 /usr/bin/composer /usr/bin/composer
 COPY . .
 
 # Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install
 
 # Run Laravel artisan commands
 RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
