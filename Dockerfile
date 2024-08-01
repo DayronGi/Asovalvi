@@ -1,6 +1,17 @@
 FROM richarvey/nginx-php-fpm:3.1.6
 
+# Install Composer
+COPY --from=composer:2.1 /usr/bin/composer /usr/bin/composer
+
 COPY . .
+
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
+
+# Run Laravel artisan commands
+RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
+
+RUN php artisan migrate --force
 
 # Image config
 ENV SKIP_COMPOSER 1
