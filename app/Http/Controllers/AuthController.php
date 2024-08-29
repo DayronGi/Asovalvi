@@ -16,7 +16,9 @@ class AuthController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|unique:users',
-            'password' => 'required'
+            'password' => 'required',
+            'document_number' => 'required',
+            'user_type' => 'required'
         ]);
 
         $user  = new User();
@@ -24,6 +26,8 @@ class AuthController extends Controller
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
+        $user->document_number = $request->document_number;
+        $user->user_type = $request->user_type;
         $user->password = Hash::make($request->password);
         $user->save();
 
