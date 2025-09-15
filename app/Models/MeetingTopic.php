@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MeetingTopic extends Model
 {
@@ -23,4 +24,9 @@ class MeetingTopic extends Model
         'creation_date',
         'status'
     ];
+
+    // Agregar relación con Meeting
+    public function meeting(): BelongsTo {
+        return $this->belongsTo(Meeting::class, 'meeting_id', 'meeting_id');
+    }
 }
