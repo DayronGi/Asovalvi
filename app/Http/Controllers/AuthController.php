@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
@@ -35,7 +36,8 @@ class AuthController extends Controller
         return response()->json(['message' => 'registrado correctamente']);
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $credentials = $request->validate([
             'email' => ['required'],
             'password' => ['required']
@@ -44,14 +46,21 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             $token = $user->createToken('token')->plainTextToken;
-            $cookie = cookie('cookie_token', $token, 60 * 24);
-            return response(['token' => $token], Response::HTTP_OK)->withoutCookie($cookie);
+
+            // Oculta campos sensibles
+            $user->makeHidden(['password', 'remember_token']);
+
+            return response()->json([
+                'token' => $token,
+                'user'  => $user,
+            ], Response::HTTP_OK);
         } else {
-            return response(['message' => 'Credenciales invalidas'], Response::HTTP_UNAUTHORIZED);
+            return response()->json(['message' => 'Credenciales invalidas'], Response::HTTP_UNAUTHORIZED);
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         $cookie = Cookie::forget('cookie_token');
         return response(['message' => 'Cierre de session correcto'])->withCookie($cookie);
     }

@@ -24,21 +24,63 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'document_number' => fake()->unique()->numerify('##########'),
+            'user_type' => fake()->randomElement(['Administrador(a)', 'Secretario(a)', 'Cartera', 'Miembro']),
             'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'status' => 2, // Activo
         ];
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
+     * Create an administrator user.
      */
-    public function unverified(): static
+    public function administrator(): static
     {
         return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
+            'user_type' => 'Administrador(a)',
+        ]);
+    }
+
+    /**
+     * Create a secretary user.
+     */
+    public function secretary(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'user_type' => 'Secretario(a)',
+        ]);
+    }
+
+    /**
+     * Create a wallet user.
+     */
+    public function wallet(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'user_type' => 'Cartera',
+        ]);
+    }
+
+    /**
+     * Create a member user.
+     */
+    public function member(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'user_type' => 'Miembro',
+        ]);
+    }
+
+    /**
+     * Create an inactive user.
+     */
+    public function inactive(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => 1, // Inactivo
         ]);
     }
 }
